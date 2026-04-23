@@ -1,0 +1,37 @@
+name: Evolute Proxy
+version: "1.0.0"
+slug: evolute_proxy
+description: Evolute cloud API proxy for Home Assistant
+author: evolute_proxy contributors
+url: https://github.com/Tamahome-M/evolute_proxy
+init: false
+startup: services
+boot: auto
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+map:
+  - addon_config:rw
+ports:
+  12321/tcp: 12321
+ports_description:
+  12321/tcp: Evolute proxy HTTP API
+options:
+  car_id: "SOME_CAR_ID_HASH_CHANGE_ME"
+  api_key: "changeme"
+  api_key_rw: "changeme_rw"
+  timeout: 60
+  refresh_interval: 600
+  sensors_refresh_interval: 120
+  json_sub: ".sensors"
+schema:
+  car_id: str
+  api_key: str
+  api_key_rw: str
+  timeout: int
+  refresh_interval: int
+  sensors_refresh_interval: int
+  json_sub: str
