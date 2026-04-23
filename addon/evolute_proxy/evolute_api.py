@@ -22,6 +22,7 @@ JSON_SUB = os.getenv("JSON_SUB", ".sensors")
 EVOLUTE_TOKEN_FILENAME = os.getenv("EVOLUTE_TOKEN_FILENAME", "evy-platform-access.txt")
 EVOLUTE_REFRESH_TOKEN_FILENAME = os.getenv("EVOLUTE_REFRESH_TOKEN_FILENAME", "evy-platform-refresh.txt")
 CAR_ID = os.getenv("CAR_ID", "SOME_CAR_ID_HASH_CHANGE_ME")
+DEBUG = os.getenv("DEBUG", "false").strip().lower() in {"1", "true", "yes", "on"}
 
 current_refresh_interval = REFRESH_INTERVAL
 
@@ -53,10 +54,13 @@ INTELLIGENT_ACTIONS = {
 
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG if DEBUG else logging.INFO,
     format="[%(levelname)s] %(asctime)s %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+if DEBUG:
+    logging.getLogger("urllib3").setLevel(logging.DEBUG)
 
 app = Flask(__name__)
 
@@ -109,6 +113,7 @@ def refresh_tokens():
     try:
         tokens = get_tokens()
         payload = {"refreshToken": tokens["refresh"]}
+        logger.debug("Refreshing tokens via EVOLUTE_REFRESH_URL")
         response = requests.post(EVOLUTE_REFRESH_URL, json=payload, timeout=TIMEOUT)
         response.raise_for_status()
 
@@ -151,6 +156,7 @@ def fetch_sensor_data():
         headers = {
             "User-Agent": USER_AGENT
         }
+        logger.debug(f"Fetching sensors from {EVOLUTE_SENSOR_URL}")
         response = requests.get(EVOLUTE_SENSOR_URL, headers=headers, cookies=cookies, timeout=TIMEOUT)
         response.raise_for_status()
         data = response.json()
@@ -259,6 +265,7 @@ def proxy(subpath):
     target_url = urljoin(base_url, subpath)
 
     method = request.method
+    logger.debug(f"Proxy request: method={method}, subpath={subpath}")
     headers = {
         "User-Agent": USER_AGENT
     }
@@ -276,6 +283,7 @@ def proxy(subpath):
     }
 
     try:
+        logger.debug(f"Proxy target URL: {target_url}")
         resp = requests.request(
             method,
             target_url,
@@ -313,6 +321,7 @@ def tbox_action(action):
     }
 
     try:
+        logger.debug(f"TBox action request: action={action}, url={target_url}")
         resp = requests.post(
             target_url,
             headers=headers,
@@ -354,6 +363,7 @@ def tbox_i_action(action):
             "evy-platform-refresh": tokens["refresh"]
         }
 
+        logger.debug(f"Intelligent action request: action={action}, endpoint={endpoint}, url={target_url}")
         resp = requests.post(
             target_url,
             headers=headers,
@@ -400,4 +410,5 @@ if __name__ == "__main__":
     periodic_fetch()
 
     logger.info("App started")
+    logger.info(f"Debug mode: {'enabled' if DEBUG else 'disabled'}")
     app.run(host=LISTEN, port=PORT)
