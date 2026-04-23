@@ -44,6 +44,7 @@ https://github.com/Tamahome-M/evolute_proxy
 - `refresh_interval` (по умолчанию `600`)
 - `sensors_refresh_interval` (по умолчанию `120`)
 - `json_sub` (по умолчанию `.sensors`)
+- `debug` (по умолчанию `false`, включает подробные DEBUG-логи в аддоне)
 
 ### 4) Запустить аддон
 

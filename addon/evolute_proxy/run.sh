@@ -17,6 +17,7 @@ export TIMEOUT="$(bashio::config 'timeout')"
 export REFRESH_INTERVAL="$(bashio::config 'refresh_interval')"
 export SENSORS_REFRESH_INTERVAL="$(bashio::config 'sensors_refresh_interval')"
 export JSON_SUB="$(bashio::config 'json_sub')"
+export DEBUG="$(bashio::config 'debug')"
 
 export EVOLUTE_TOKEN_FILENAME=/config/evy-platform-access.txt
 export EVOLUTE_REFRESH_TOKEN_FILENAME=/config/evy-platform-refresh.txt
