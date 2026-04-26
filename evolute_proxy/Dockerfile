@@ -9,5 +9,5 @@ WORKDIR /
 COPY . .
 
 EXPOSE ${PORT}
-
+RUN chmod +x /run.sh
 CMD /run.sh
