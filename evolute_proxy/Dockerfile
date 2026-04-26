@@ -15,4 +15,4 @@ RUN chmod +x /run.sh
 EXPOSE ${PORT}
 RUN ls -l /
 RUN cat /run.sh
-CMD ["/run.sh"]
+
