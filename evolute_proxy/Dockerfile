@@ -4,12 +4,14 @@ RUN pip install --upgrade pip
 
 RUN pip install flask requests
 
-WORKDIR /
+WORKDIR /app
 
 COPY run.sh /run.sh
 COPY evolute_api.py /evolute_api.py
 
+RUN chmod +x /run.sh
+
 
 EXPOSE ${PORT}
-RUN chmod +x /run.sh
-CMD /run.sh
+
+CMD ["/run.sh"]
