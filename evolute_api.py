@@ -31,8 +31,8 @@ USER_AGENT = (
     "Chrome/144.0.0.0 Safari/537.36"
 )
 
-DUMP_FILE = "dump.json"
-STATUS_FILE = "status.json"
+DUMP_FILE = os.getenv("DUMP_FILE", "/data/dump.json")
+STATUS_FILE = os.getenv("STATUS_FILE", "/data/status.json")
 
 EVOLUTE_REFRESH_URL = "https://app.evassist.ru/id-service/auth/refresh-token"
 EVOLUTE_SENSOR_URL = f"https://app.evassist.ru/car-service/tbox/{CAR_ID}/info"

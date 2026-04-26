@@ -1,0 +1,28 @@
+configuration:
+  car_id:
+    name: Car ID
+    description: Unique Evolute vehicle identifier.
+  api_key:
+    name: API key (read)
+    description: API key for read-only endpoints.
+  api_key_rw:
+    name: API key (read/write)
+    description: API key for write endpoints.
+  access_token:
+    name: Access token
+    description: Evolute access token from web app.
+  refresh_token:
+    name: Refresh token
+    description: Evolute refresh token from web app.
+  timeout:
+    name: HTTP timeout
+    description: Timeout for requests to Evolute API.
+  refresh_interval:
+    name: Refresh interval
+    description: Token refresh interval in seconds.
+  sensors_refresh_interval:
+    name: Sensors refresh interval
+    description: Sensor polling interval in seconds.
+  json_sub:
+    name: JSON path
+    description: Path to sensors object in response JSON.
