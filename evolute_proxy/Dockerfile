@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE ${PORT}
 
-CMD ["python3", "evolute_api.py"]
+CMD /run.sh
