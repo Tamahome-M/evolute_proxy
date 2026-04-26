@@ -1,8 +1,8 @@
 name: Evolute Proxy
-version: "1.0.0"
+version: "1.0.1"
 slug: evolute_proxy
 description: Evolute telematics proxy API for Home Assistant
-url: "https://github.com/CHANGE_ME/evolute_proxy"
+url: "https://github.com/Tamahome-M/evolute_proxy"
 startup: application
 boot: auto
 init: false
