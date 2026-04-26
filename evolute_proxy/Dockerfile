@@ -4,7 +4,7 @@ RUN pip install --upgrade pip
 
 RUN pip install flask requests
 
-WORKDIR /app
+WORKDIR /
 
 COPY . .
 
