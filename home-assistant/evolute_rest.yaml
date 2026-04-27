@@ -38,6 +38,10 @@
           - climateFanSpeed
           - climateStatus
           - climateTargetTemp
+          - climateCurentTemp
+          - isOnline
+          - lastOnlineTime
+          - sensorDataTime
 # here
   - resource: http://192.168.1.254:12321/position/all
     method: GET

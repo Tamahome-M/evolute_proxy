@@ -228,11 +228,18 @@ def manual_refresh():
 @app.route("/sensors/all", methods=["GET"])
 def get_all_sensors():
     check_auth(request)
-    sensors = sensors_data.get("sensorsData")
-    if sensors:
-        return jsonify(sensors)
-    else:
+    if not sensors_data:
         return jsonify({"error": "No sensors data available"}), 404
+
+    sensors = dict(sensors_data.get("sensorsData") or {})
+
+    # Include selected top-level status fields so Home Assistant can expose
+    # availability and last online metadata from the same endpoint.
+    sensors["isOnline"] = sensors_data.get("isOnline")
+    sensors["lastOnlineTime"] = sensors_data.get("lastOnlineTime")
+    sensors["sensorDataTime"] = sensors_data.get("time")
+
+    return jsonify(sensors)
 
 @app.route("/position/all", methods=["GET"])
 def get_all_positions():
@@ -247,6 +254,8 @@ def get_all_positions():
 def get_single_sensor(sensor_name):
     check_auth_rw(request)
     value = sensors_data.get(sensor_name)
+    if value is None:
+        value = (sensors_data.get("sensorsData") or {}).get(sensor_name)
     if value is None:
         return jsonify({"error": "sensor not found"}), 404
     return jsonify({sensor_name: value})
