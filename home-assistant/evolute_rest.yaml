@@ -7,7 +7,9 @@
     sensor:
       - name: "Evolute Raw Data"
         unique_id: evolute_raw_data
-        value_template: "{{ value_json.diagnostics }}"
+        # Keep state bound to a key that is always present in /sensors/all payload.
+        # diagnostics is often omitted by API, which can make this sensor unavailable.
+        value_template: "{{ value_json.odometer | default(0) }}"
         unit_of_measurement: "km"
         icon: mdi:speedometer
         json_attributes:
@@ -31,7 +33,7 @@
           - doorRRStatus
           - trunkStatus
           - headLightsStatus
-          - 12VBatteryVoltage
+          - "12VBatteryVoltage"
           - climateFWindowStatus
           - climateFanSpeed
           - climateStatus
