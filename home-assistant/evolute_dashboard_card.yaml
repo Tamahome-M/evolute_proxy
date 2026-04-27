@@ -1,141 +1,158 @@
-type: vertical-stack
-cards:
-  - type: tile
-    entity: binary_sensor.evolute_ignition_on
-    name: Evolute — Статус
-    icon: mdi:car-electric
-    color: green
+type: entities
+title: Evolute — Все сенсоры и кнопки
+show_header_toggle: false
+state_color: true
+entities:
+  # Общий статус
+  - entity: binary_sensor.evolute_online
+    name: Онлайн
+  - entity: binary_sensor.evolute_ignition_on
+    name: Зажигание
+  - entity: binary_sensor.evolute_ready_status
+    name: Готовность
+  - entity: binary_sensor.evolute_headlights_on
+    name: Фары
 
-  - type: entities
-    title: Evolute — Основные показатели
-    show_header_toggle: false
-    entities:
-      - entity: sensor.evolute_battery_percentage
-        name: Тяговая батарея
-      - entity: sensor.evolute_remains_mileage_battery
-        name: Запас хода (батарея)
-      - entity: sensor.evolute_remains_mileage_fuel
-        name: Запас хода (топливо)
-      - entity: sensor.evolute_fuel_percentage
-        name: Топливо
-      - entity: sensor.evolute_outside_temperature
-        name: Температура снаружи
-      - entity: sensor.evolute_odometer
-        name: Пробег
-      - entity: sensor.evolute_speed
-        name: Скорость
+  # Батарея и топливо
+  - entity: sensor.evolute_battery_percentage
+    name: Тяговая батарея
+  - entity: sensor.evolute_12vbattery_voltage
+    name: 12V батарея
+  - entity: sensor.evolute_battery_temperature
+    name: Температура батареи
+  - entity: sensor.evolute_fuel_percentage
+    name: Топливо
+  - entity: sensor.evolute_remains_mileage_battery
+    name: Запас хода (батарея)
+  - entity: sensor.evolute_remains_mileage_fuel
+    name: Запас хода (топливо)
 
-  - type: grid
-    title: Evolute — Быстрые команды
-    columns: 2
-    square: false
-    cards:
-      - type: button
-        name: Открыть
-        icon: mdi:lock-open-variant
-        tap_action:
-          action: call-service
-          service: script.evolute_lock_open
-      - type: button
-        name: Закрыть
-        icon: mdi:lock
-        tap_action:
-          action: call-service
-          service: script.evolute_lock_close
-      - type: button
-        name: Багажник +
-        icon: mdi:car-back
-        tap_action:
-          action: call-service
-          service: script.evolute_trunk_open
-      - type: button
-        name: Багажник -
-        icon: mdi:car-back
-        tap_action:
-          action: call-service
-          service: script.evolute_trunk_close
-      - type: button
-        name: Blink/Horn
-        icon: mdi:car-emergency
-        tap_action:
-          action: call-service
-          service: script.evolute_blink
+  # Движение и пробег
+  - entity: sensor.evolute_speed
+    name: Скорость
+  - entity: sensor.evolute_tachometer
+    name: Тахометр
+  - entity: sensor.evolute_odometer
+    name: Пробег
 
-  - type: entities
-    title: Evolute — Климат (статус)
-    show_header_toggle: false
-    entities:
-      - entity: binary_sensor.evolute_climate_on
-        name: Климат включен
-      - entity: sensor.evolute_climate_target_temp
-        name: Целевая температура
-      - entity: sensor.evolute_climate_fan_speed
-        name: Скорость вентилятора
+  # Климат
+  - entity: binary_sensor.evolute_climate_on
+    name: Климат включен
+  - entity: binary_sensor.evolute_climate_front_defrost
+    name: Обдув лобового
+  - entity: sensor.evolute_climate_current_temp
+    name: Температура в салоне
+  - entity: sensor.evolute_climate_target_temp
+    name: Целевая температура
+  - entity: sensor.evolute_climate_fan_speed
+    name: Скорость вентилятора
+  - entity: sensor.evolute_outside_temperature
+    name: Температура снаружи
+  - entity: sensor.evolute_inboard_temperature
+    name: Температура внутри
+  - entity: sensor.evolute_coolant_temperature
+    name: Температура ОЖ
 
-  - type: grid
-    title: Evolute — Климат (управление)
-    columns: 2
-    square: false
-    cards:
-      - type: button
-        entity: script.evolute_heating_on
-        name: Обогрев ON
-        icon: mdi:radiator
-        tap_action:
-          action: call-service
-          service: script.evolute_heating_on
-      - type: button
-        entity: script.evolute_heating_off
-        name: Обогрев OFF
-        icon: mdi:radiator-off
-        tap_action:
-          action: call-service
-          service: script.evolute_heating_off
-      - type: button
-        entity: script.evolute_cooling_on
-        name: Охлаждение ON
-        icon: mdi:snowflake
-        tap_action:
-          action: call-service
-          service: script.evolute_cooling_on
-      - type: button
-        entity: script.evolute_cooling_off
-        name: Охлаждение OFF
-        icon: mdi:snowflake-off
-        tap_action:
-          action: call-service
-          service: script.evolute_cooling_off
+  # Кузов
+  - entity: binary_sensor.evolute_central_locking_engaged
+    name: Центральный замок
+  - entity: binary_sensor.evolute_trunk_open
+    name: Багажник
+  - entity: binary_sensor.evolute_door_front_left_open
+    name: Передняя левая дверь
+  - entity: binary_sensor.evolute_door_front_right_open
+    name: Передняя правая дверь
+  - entity: binary_sensor.evolute_door_rear_left_open
+    name: Задняя левая дверь
+  - entity: binary_sensor.evolute_door_rear_right_open
+    name: Задняя правая дверь
 
-  - type: entities
-    title: Evolute — Состояние кузова
-    show_header_toggle: false
-    entities:
-      - entity: binary_sensor.evolute_central_locking_engaged
-        name: Центральный замок
-      - entity: binary_sensor.evolute_trunk_open
-        name: Багажник открыт
-      - entity: binary_sensor.evolute_door_front_left_open
-        name: Передняя левая дверь
-      - entity: binary_sensor.evolute_door_front_right_open
-        name: Передняя правая дверь
-      - entity: binary_sensor.evolute_door_rear_left_open
-        name: Задняя левая дверь
-      - entity: binary_sensor.evolute_door_rear_right_open
-        name: Задняя правая дверь
+  # Позиция и GPS
+  - entity: sensor.evolute_latitude
+    name: Широта
+  - entity: sensor.evolute_longitude
+    name: Долгота
+  - entity: sensor.evolute_altitude
+    name: Высота
+  - entity: sensor.evolute_gps_satellites
+    name: Спутники
+  - entity: sensor.evolute_gps_course
+    name: Курс
+  - entity: sensor.evolute_hdop
+    name: Точность (HDOP)
 
-  - type: entities
-    title: Evolute — Позиция
-    show_header_toggle: false
-    entities:
-      - entity: sensor.evolute_latitude
-        name: Широта
-      - entity: sensor.evolute_longitude
-        name: Долгота
-      - entity: sensor.evolute_altitude
-        name: Высота
-      - entity: sensor.evolute_gps_satellites
-        name: Спутники
-      - entity: sensor.evolute_gps_course
-        name: Курс
-      - entity: sensor.evolute_hdop
-        name: Точность (HDOP)
+  # Время и диагностика
+  - entity: sensor.evolute_last_online_time
+    name: Последний онлайн
+  - entity: sensor.evolute_sensor_data_time
+    name: Время данных
+  - entity: sensor.evolute_diagnostics_code
+    name: Код диагностики
+
+  # Кнопки команд
+  - type: button
+    name: Открыть замки
+    icon: mdi:lock-open-variant
+    tap_action:
+      action: call-service
+      service: script.evolute_lock_open
+  - type: button
+    name: Закрыть замки
+    icon: mdi:lock
+    tap_action:
+      action: call-service
+      service: script.evolute_lock_close
+  - type: button
+    name: Открыть багажник
+    icon: mdi:car-back
+    tap_action:
+      action: call-service
+      service: script.evolute_trunk_open
+  - type: button
+    name: Закрыть багажник
+    icon: mdi:car-back
+    tap_action:
+      action: call-service
+      service: script.evolute_trunk_close
+  - type: button
+    name: Blink / Horn
+    icon: mdi:car-emergency
+    tap_action:
+      action: call-service
+      service: script.evolute_blink
+  - type: button
+    name: Обогрев ON
+    icon: mdi:radiator
+    tap_action:
+      action: call-service
+      service: script.evolute_heating_on
+  - type: button
+    name: Обогрев OFF
+    icon: mdi:radiator-off
+    tap_action:
+      action: call-service
+      service: script.evolute_heating_off
+  - type: button
+    name: Охлаждение ON
+    icon: mdi:snowflake
+    tap_action:
+      action: call-service
+      service: script.evolute_cooling_on
+  - type: button
+    name: Охлаждение OFF
+    icon: mdi:snowflake-off
+    tap_action:
+      action: call-service
+      service: script.evolute_cooling_off
+  - type: button
+    name: Сценарий подготовки ON
+    icon: mdi:car-clock
+    tap_action:
+      action: call-service
+      service: script.evolute_prepare_on
+  - type: button
+    name: Сценарий подготовки OFF
+    icon: mdi:car-clock
+    tap_action:
+      action: call-service
+      service: script.evolute_prepare_off
