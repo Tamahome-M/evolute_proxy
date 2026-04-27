@@ -95,6 +95,23 @@
         icon: mdi:thermometer
         state_class: measurement
 
+      - name: "Evolute Climate Current Temp"
+        unique_id: evolute_climate_current_temp
+        state: "{{ state_attr('sensor.evolute_raw_data', 'climateCurentTemp') }}"
+        unit_of_measurement: "°C"
+        icon: mdi:thermometer-auto
+        state_class: measurement
+
+      - name: "Evolute Last Online Time"
+        unique_id: evolute_last_online_time
+        state: "{{ state_attr('sensor.evolute_raw_data', 'lastOnlineTime') }}"
+        icon: mdi:clock-outline
+
+      - name: "Evolute Sensor Data Time"
+        unique_id: evolute_sensor_data_time
+        state: "{{ state_attr('sensor.evolute_raw_data', 'sensorDataTime') }}"
+        icon: mdi:timeline-clock
+
       - name: "Evolute GPS Course"
         unique_id: evolute_gps_course
         state: "{{ state_attr('sensor.evolute_location_data', 'course') }}"
@@ -210,3 +227,9 @@
         state: "{{ state_attr('sensor.evolute_raw_data', 'climateFWindowStatus') | int == 1 }}"
         device_class: cold
         icon: mdi:car-windshield
+
+      - name: "Evolute Online"
+        unique_id: evolute_online
+        state: "{{ state_attr('sensor.evolute_raw_data', 'isOnline') in [true, 'true', 1, '1'] }}"
+        device_class: connectivity
+        icon: mdi:car-connected
