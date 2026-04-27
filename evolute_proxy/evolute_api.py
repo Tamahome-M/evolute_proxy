@@ -4,6 +4,7 @@ import time
 import logging
 import threading
 import sys
+import re
 import requests
 from flask import Flask, request, jsonify, abort
 from datetime import datetime
@@ -86,13 +87,37 @@ def _sanitize_headers(headers):
     return sanitized
 
 
+def _sanitize_svg_icons(value):
+    if isinstance(value, dict):
+        sanitized = {}
+        for key, item in value.items():
+            if key in ("light", "dark") and isinstance(item, str) and item.lstrip().startswith("<svg"):
+                sanitized[key] = "<svg omitted>"
+            else:
+                sanitized[key] = _sanitize_svg_icons(item)
+        return sanitized
+    if isinstance(value, list):
+        return [_sanitize_svg_icons(item) for item in value]
+    return value
+
+
+def _sanitize_logged_body(body):
+    try:
+        payload = json.loads(body)
+        sanitized_payload = _sanitize_svg_icons(payload)
+        return json.dumps(sanitized_payload, ensure_ascii=False)
+    except Exception:
+        return re.sub(r"<svg[^>]*>.*?</svg>", "<svg omitted>", body, flags=re.DOTALL)
+
+
 def log_evolute_response(context, response):
+    body = _sanitize_logged_body(_decode_body(response.content))
     logger.info(
         "Evolute response [%s]: status=%s headers=%s body=%s",
         context,
         response.status_code,
         dict(response.headers),
-        _decode_body(response.content),
+        body,
     )
 
 def read_json_file(filename, default=None):
@@ -229,13 +254,14 @@ def log_home_assistant_request():
 
 @app.after_request
 def log_home_assistant_response(response):
+    response_body = _sanitize_logged_body(_decode_body(response.get_data()))
     logger.info(
         "Home Assistant response: method=%s path=%s status=%s headers=%s body=%s",
         request.method,
         request.path,
         response.status_code,
         dict(response.headers),
-        _decode_body(response.get_data()),
+        response_body,
     )
     return response
 
