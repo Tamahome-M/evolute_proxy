@@ -1,11 +1,19 @@
 # ....... 
 template: !include evolute.yaml
 
-# modify api key here
+# modify API keys here
 input_text:
   evolute_proxy_token:
     initial: "changeme"
+  evolute_proxy_token_rw:
+    initial: "changeme_rw"
 
 # modify address here
 rest: !include evolute_rest.yaml
+
+# commands for /tbox-i/<action_name>
+rest_command: !include evolute_commands.yaml
+
+# easy-to-run scripts wrapping rest_command actions
+script: !include evolute_scripts.yaml
 # ......

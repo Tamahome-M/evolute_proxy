@@ -1,0 +1,54 @@
+evolute_lock_open:
+  alias: Evolute - Unlock doors
+  sequence:
+    - service: rest_command.evolute_lock_open
+
+evolute_lock_close:
+  alias: Evolute - Lock doors
+  sequence:
+    - service: rest_command.evolute_lock_close
+
+evolute_heating_on:
+  alias: Evolute - Heating ON
+  sequence:
+    - service: rest_command.evolute_heating_on
+
+evolute_heating_off:
+  alias: Evolute - Heating OFF
+  sequence:
+    - service: rest_command.evolute_heating_off
+
+evolute_cooling_on:
+  alias: Evolute - Cooling ON
+  sequence:
+    - service: rest_command.evolute_cooling_on
+
+evolute_cooling_off:
+  alias: Evolute - Cooling OFF
+  sequence:
+    - service: rest_command.evolute_cooling_off
+
+evolute_blink:
+  alias: Evolute - Blink and horn
+  sequence:
+    - service: rest_command.evolute_blink
+
+evolute_trunk_open:
+  alias: Evolute - Open trunk
+  sequence:
+    - service: rest_command.evolute_trunk_open
+
+evolute_trunk_close:
+  alias: Evolute - Close trunk
+  sequence:
+    - service: rest_command.evolute_trunk_close
+
+evolute_prepare_on:
+  alias: Evolute - Start preheat scenario
+  sequence:
+    - service: rest_command.evolute_prepare_on
+
+evolute_prepare_off:
+  alias: Evolute - Cancel preheat scenario
+  sequence:
+    - service: rest_command.evolute_prepare_off

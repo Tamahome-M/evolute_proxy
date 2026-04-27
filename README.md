@@ -25,3 +25,13 @@
 После изменения конфигурации нажмите **Save** и **Restart**.
 
 > `set_token.sh` оставлен только как legacy-утилита и для add-on больше не требуется.
+
+## Команды управления TBox из Home Assistant
+
+В папке `home-assistant/` добавлены готовые конфиги для intelligent API эндпоинта `POST /tbox-i/<action_name>`:
+
+- `home-assistant/evolute_commands.yaml` — `rest_command` для всех поддерживаемых действий.
+- `home-assistant/evolute_scripts.yaml` — `script`-обертки, чтобы запускать действия из UI/автоматизаций.
+- `home-assistant/configuration.yaml` — пример подключения с отдельным `input_text.evolute_proxy_token_rw`.
+
+Поддерживаемые `action_name`: `lock_open`, `lock_close`, `heating_on`, `heating_off`, `cooling_on`, `cooling_off`, `blink`, `trunk_open`, `trunk_close`, `prepare_on`, `prepare_off`.
