@@ -1,0 +1,67 @@
+# Remote commands for Evolute TBox intelligent actions (/tbox-i/<action_name>)
+# Change IP to your add-on host address if needed.
+evolute_lock_open:
+  url: "http://192.168.1.254:12321/tbox-i/lock_open"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_lock_close:
+  url: "http://192.168.1.254:12321/tbox-i/lock_close"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_heating_on:
+  url: "http://192.168.1.254:12321/tbox-i/heating_on"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_heating_off:
+  url: "http://192.168.1.254:12321/tbox-i/heating_off"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_cooling_on:
+  url: "http://192.168.1.254:12321/tbox-i/cooling_on"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_cooling_off:
+  url: "http://192.168.1.254:12321/tbox-i/cooling_off"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_blink:
+  url: "http://192.168.1.254:12321/tbox-i/blink"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_trunk_open:
+  url: "http://192.168.1.254:12321/tbox-i/trunk_open"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_trunk_close:
+  url: "http://192.168.1.254:12321/tbox-i/trunk_close"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_prepare_on:
+  url: "http://192.168.1.254:12321/tbox-i/prepare_on"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
+
+evolute_prepare_off:
+  url: "http://192.168.1.254:12321/tbox-i/prepare_off"
+  method: POST
+  headers:
+    X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
