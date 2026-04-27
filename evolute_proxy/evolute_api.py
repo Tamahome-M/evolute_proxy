@@ -69,6 +69,32 @@ status_info = {
 tokens_ok = False
 start_timestamp = time.time()
 
+
+def _decode_body(data):
+    if data is None:
+        return ""
+    if isinstance(data, bytes):
+        return data.decode("utf-8", errors="replace")
+    return str(data)
+
+
+def _sanitize_headers(headers):
+    sanitized = dict(headers)
+    for key in list(sanitized.keys()):
+        if key.lower() == "x-api-key":
+            sanitized[key] = "***"
+    return sanitized
+
+
+def log_evolute_response(context, response):
+    logger.info(
+        "Evolute response [%s]: status=%s headers=%s body=%s",
+        context,
+        response.status_code,
+        dict(response.headers),
+        _decode_body(response.content),
+    )
+
 def read_json_file(filename, default=None):
     try:
         with open(filename, "r") as f:
@@ -110,6 +136,7 @@ def refresh_tokens():
         tokens = get_tokens()
         payload = {"refreshToken": tokens["refresh"]}
         response = requests.post(EVOLUTE_REFRESH_URL, json=payload, timeout=TIMEOUT)
+        log_evolute_response("token_refresh", response)
         response.raise_for_status()
 
         data = response.json()
@@ -152,6 +179,7 @@ def fetch_sensor_data():
             "User-Agent": USER_AGENT
         }
         response = requests.get(EVOLUTE_SENSOR_URL, headers=headers, cookies=cookies, timeout=TIMEOUT)
+        log_evolute_response("sensor_fetch", response)
         response.raise_for_status()
         data = response.json()
         keys = JSON_SUB.strip(".").split(".")
@@ -185,6 +213,31 @@ def check_auth_rw(req):
     key = req.headers.get("X-API-Key") or req.args.get("api_key")
     if key != API_KEY_RW:
         abort(jsonify({"error": "Unauthorized"}), 401)
+
+
+@app.before_request
+def log_home_assistant_request():
+    logger.info(
+        "Home Assistant request: method=%s path=%s query=%s headers=%s body=%s",
+        request.method,
+        request.path,
+        dict(request.args),
+        _sanitize_headers(request.headers),
+        _decode_body(request.get_data()),
+    )
+
+
+@app.after_request
+def log_home_assistant_response(response):
+    logger.info(
+        "Home Assistant response: method=%s path=%s status=%s headers=%s body=%s",
+        request.method,
+        request.path,
+        response.status_code,
+        dict(response.headers),
+        _decode_body(response.get_data()),
+    )
+    return response
 
 @app.route("/ping", methods=["GET"])
 def ping():
@@ -286,6 +339,7 @@ def proxy(subpath):
             timeout=TIMEOUT,
             allow_redirects=False
         )
+        log_evolute_response(f"proxy/{subpath}", resp)
         excluded_headers = ["content-encoding", "transfer-encoding", "connection"]
         response_headers = [
             (name, value) for (name, value) in resp.raw.headers.items()
@@ -320,6 +374,7 @@ def tbox_action(action):
             cookies=cookies,
             timeout=TIMEOUT
         )
+        log_evolute_response(f"tbox/{action}", resp)
         resp.raise_for_status()
         return jsonify({"status": "success"})
     except Exception as e:
@@ -361,6 +416,7 @@ def tbox_i_action(action):
             cookies=cookies,
             timeout=TIMEOUT
         )
+        log_evolute_response(f"tbox-i/{action}", resp)
         resp.raise_for_status()
         logger.info(f"Intelligent action '{action}' executed successfully")
         fetch_sensor_data()
