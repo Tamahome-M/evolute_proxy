@@ -35,3 +35,18 @@
 - `home-assistant/configuration.yaml` — пример подключения с отдельным `input_text.evolute_proxy_token_rw`.
 
 Поддерживаемые `action_name`: `lock_open`, `lock_close`, `heating_on`, `heating_off`, `cooling_on`, `cooling_off`, `blink`, `trunk_open`, `trunk_close`, `prepare_on`, `prepare_off`.
+
+## Готовая карточка Lovelace
+
+Добавлен готовый YAML-дашборд для Home Assistant:
+
+- `home-assistant/evolute_dashboard_card.yaml`
+
+Как использовать:
+
+1. Откройте нужный Dashboard в Home Assistant.
+2. Нажмите **Edit dashboard** → **Add card** → **Manual**.
+3. Вставьте содержимое `home-assistant/evolute_dashboard_card.yaml`.
+4. Сохраните карточку.
+
+> Карточка использует сущности из `home-assistant/evolute.yaml` и скрипты из `home-assistant/evolute_scripts.yaml`.
