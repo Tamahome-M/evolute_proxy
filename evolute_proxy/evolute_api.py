@@ -212,6 +212,16 @@ def fetch_sensor_data():
         keys = JSON_SUB.strip(".").split(".")
         for k in keys:
             data = data.get(k, {})
+
+        if isinstance(data, dict):
+            sensors_data_payload = data.get("sensorsData") if isinstance(data.get("sensorsData"), dict) else None
+            if sensors_data_payload is not None:
+                for extra_key in ("isOnline", "lastOnlineTime", "time"):
+                    if extra_key in data and extra_key not in sensors_data_payload:
+                        sensors_data_payload[extra_key] = data.get(extra_key)
+                if "sensorDataTime" not in sensors_data_payload and "time" in data:
+                    sensors_data_payload["sensorDataTime"] = data.get("time")
+
         sensors_data = data
         update_status("last_sensor_update")
         write_json_file(DUMP_FILE, sensors_data)
