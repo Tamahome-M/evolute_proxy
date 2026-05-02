@@ -42,6 +42,7 @@
           - isOnline
           - lastOnlineTime
           - sensorDataTime
+          - time
 # here
   - resource: http://127.0.0.1:12321/position/all
     method: GET

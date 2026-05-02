@@ -310,10 +310,25 @@ def manual_refresh():
 def get_all_sensors():
     check_auth(request)
     sensors = sensors_data.get("sensorsData")
-    if sensors:
-        return jsonify(sensors)
-    else:
+    if not sensors:
         return jsonify({"error": "No sensors data available"}), 404
+
+    response_payload = dict(sensors)
+
+    # Preserve scalar top-level sensor fields from Evolute payload
+    # so Home Assistant entities do not lose metadata between API changes.
+    for key, value in sensors_data.items():
+        if key in ("sensorsData", "positionData"):
+            continue
+        if isinstance(value, (dict, list)):
+            continue
+        response_payload[key] = value
+
+    # Backward-compatible alias used by existing Home Assistant configs.
+    if "time" in sensors_data and "sensorDataTime" not in response_payload:
+        response_payload["sensorDataTime"] = sensors_data.get("time")
+
+    return jsonify(response_payload)
 
 @app.route("/position/all", methods=["GET"])
 def get_all_positions():
