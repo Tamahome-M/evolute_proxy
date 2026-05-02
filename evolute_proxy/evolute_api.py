@@ -319,11 +319,23 @@ def manual_refresh():
 @app.route("/sensors/all", methods=["GET"])
 def get_all_sensors():
     check_auth(request)
-    sensors = sensors_data.get("sensorsData")
-    if sensors:
-        return jsonify(sensors)
-    else:
+    if not sensors_data:
         return jsonify({"error": "No sensors data available"}), 404
+
+    sensors = dict(sensors_data.get("sensorsData") or {})
+
+    # Include selected top-level status fields without overriding values that
+    # are already present in sensorsData.
+    for source_key, target_key in (
+        ("isOnline", "isOnline"),
+        ("lastOnlineTime", "lastOnlineTime"),
+        ("time", "sensorDataTime"),
+    ):
+        value = sensors_data.get(source_key)
+        if value is not None:
+            sensors.setdefault(target_key, value)
+
+    return jsonify(sensors)
 
 @app.route("/position/all", methods=["GET"])
 def get_all_positions():
