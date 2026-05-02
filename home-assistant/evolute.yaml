@@ -55,6 +55,14 @@
         icon: mdi:coolant-temperature
         state_class: measurement
 
+
+      - name: "Evolute Coolant Temp"
+        unique_id: evolute_coolant_temp_alias
+        state: "{{ states('sensor.evolute_coolant_temperature') }}"
+        unit_of_measurement: "°C"
+        icon: mdi:coolant-temperature
+        state_class: measurement
+
       - name: "Evolute Inboard Temperature"
         unique_id: evolute_inboard_temp
         state: "{{ state_attr('sensor.evolute_raw_data', 'inBoardTemp') }}"

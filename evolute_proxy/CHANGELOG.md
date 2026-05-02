@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.23
+
+- Fixed sensor normalization so `/sensors/all` includes `isOnline`, `lastOnlineTime`, and `sensorDataTime` (mapped from top-level `time` when needed).
+- Added Home Assistant compatibility alias sensor `Evolute Coolant Temp` for dashboards that expect `sensor.evolute_coolant_temp`.
+- Bumped add-on version to `1.0.23`.
+
 ## 1.0.21
 
 - Added add-on option `debug` to enable/disable verbose logging.
