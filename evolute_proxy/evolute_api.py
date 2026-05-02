@@ -64,6 +64,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 sensors_data = {}
+latest_sensors_root = {}
 status_info = {
     "start_time": datetime.utcnow().isoformat(),
     "last_token_update": None,
@@ -192,7 +193,7 @@ def refresh_tokens():
         logger.error(f"Failed to refresh tokens: {e}")
 
 def fetch_sensor_data():
-    global sensors_data
+    global sensors_data, latest_sensors_root
     if not tokens_ok:
         logger.warning("Sensor data fetch skipped: tokens are not active")
         return
@@ -208,7 +209,10 @@ def fetch_sensor_data():
         response = requests.get(EVOLUTE_SENSOR_URL, headers=headers, cookies=cookies, timeout=TIMEOUT)
         log_evolute_response("sensor_fetch", response)
         response.raise_for_status()
-        data = response.json()
+        full_payload = response.json()
+        latest_sensors_root = full_payload.get("sensors", {}) if isinstance(full_payload, dict) else {}
+
+        data = full_payload
         keys = JSON_SUB.strip(".").split(".")
         for k in keys:
             data = data.get(k, {})
@@ -317,16 +321,26 @@ def get_all_sensors():
 
     # Preserve scalar top-level sensor fields from Evolute payload
     # so Home Assistant entities do not lose metadata between API changes.
-    for key, value in sensors_data.items():
-        if key in ("sensorsData", "positionData"):
-            continue
-        if isinstance(value, (dict, list)):
-            continue
-        response_payload[key] = value
+    def _merge_scalar_root_fields(root):
+        if not isinstance(root, dict):
+            return
+        for key, value in root.items():
+            if key in ("sensorsData", "positionData"):
+                continue
+            if isinstance(value, (dict, list)):
+                continue
+            response_payload[key] = value
+
+    _merge_scalar_root_fields(sensors_data)
+    # Fallback for setups where JSON_SUB points directly to sensorsData and
+    # top-level flags (e.g. isOnline) are not present in sensors_data.
+    _merge_scalar_root_fields(latest_sensors_root)
 
     # Backward-compatible alias used by existing Home Assistant configs.
     if "time" in sensors_data and "sensorDataTime" not in response_payload:
         response_payload["sensorDataTime"] = sensors_data.get("time")
+    elif "time" in latest_sensors_root and "sensorDataTime" not in response_payload:
+        response_payload["sensorDataTime"] = latest_sensors_root.get("time")
 
     return jsonify(response_payload)
 
