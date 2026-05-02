@@ -138,6 +138,8 @@ cards:
     entities:
       - entity: sensor.evolute_12vbattery_voltage
         name: 12V батарея
+      - entity: sensor.evolute_battery_temp
+        name: Температура АКБ
       - entity: sensor.evolute_odometer
         name: Пробег
       - entity: sensor.evolute_speed

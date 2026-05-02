@@ -1,0 +1,115 @@
+type: custom:button-card
+show_icon: false
+show_state: false
+show_name: false
+styles:
+  card:
+    - border-radius: 22px
+    - padding: 16px 16px 12px 16px
+    - background: '#f4f4f5'
+    - box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06)
+  grid:
+    - grid-template-areas: |
+        "title status status"
+        "fuelbar fuelbar batbar"
+        "fuelval fuelval batval"
+        "fuellab fuellab batlab"
+        "tval vval oval"
+        "tlab vlab olab"
+    - grid-template-columns: 1fr 1fr 1fr
+    - row-gap: 6px
+    - column-gap: 10px
+  custom_fields:
+    title:
+      - justify-self: start
+      - align-self: center
+      - font-size: 24px
+      - line-height: 1
+      - font-weight: 500
+      - color: '#161616'
+    status:
+      - justify-self: end
+      - align-self: center
+    fuelval:
+      - justify-self: start
+      - color: '#222'
+    batval:
+      - justify-self: start
+      - color: '#222'
+    fuellab:
+      - justify-self: start
+      - color: '#8f9198'
+      - font-size: 16px
+    batlab:
+      - justify-self: start
+      - color: '#8f9198'
+      - font-size: 16px
+    tval:
+      - color: '#222'
+    vval:
+      - color: '#222'
+    oval:
+      - color: '#222'
+    tlab:
+      - color: '#8f9198'
+      - font-size: 15px
+    vlab:
+      - color: '#8f9198'
+      - font-size: 15px
+    olab:
+      - color: '#8f9198'
+      - font-size: 15px
+custom_fields:
+  title: i-SPACE
+  status: |
+    [[[
+      const online = states['binary_sensor.evolute_online']?.state === 'on';
+      const bg = online ? '#5cbc63' : '#a8a8a8';
+      const txt = online ? 'Доступен ✓' : 'Недоступен';
+      return `<div style="display:inline-flex;align-items:center;gap:10px;"><span style="width:13px;height:13px;border-radius:50%;background:${bg};display:inline-block"></span><span style="background:${bg};color:#fff;font-size:20px;line-height:1;padding:5px 14px;border-radius:999px;">${txt}</span></div>`;
+    ]]]
+  fuelbar: |
+    [[[
+      const v = Math.max(0, Math.min(100, Number(states['sensor.evolute_fuel_percentage']?.state ?? 0)));
+      return `<div style="display:flex;align-items:center;gap:10px;"><ha-icon icon="mdi:fuel" style="--mdc-icon-size:20px;color:#3f8fc7"></ha-icon><div style="height:6px;background:#d5d8de;flex:1;border-radius:6px;overflow:hidden;"><div style="height:100%;width:${v}%;background:#3f8fc7"></div></div></div>`;
+    ]]]
+  batbar: |
+    [[[
+      const v = Math.max(0, Math.min(100, Number(states['sensor.evolute_battery_percentage']?.state ?? 0)));
+      return `<div style="display:flex;align-items:center;gap:10px;"><ha-icon icon="mdi:lightning-bolt" style="--mdc-icon-size:20px;color:#3f8fc7"></ha-icon><div style="height:6px;background:#d5d8de;flex:1;border-radius:6px;overflow:hidden;"><div style="height:100%;width:${v}%;background:#3f8fc7"></div></div></div>`;
+    ]]]
+  fuelval: |
+    [[[
+      const p = states['sensor.evolute_fuel_percentage']?.state ?? '-';
+      const km = states['sensor.evolute_remains_mileage_fuel']?.state ?? states['sensor.evolute_raw_data']?.attributes?.remainsMileageFuel ?? '-';
+      return `<div style="font-size:22px;font-weight:500;line-height:1.05;">${p}% / ${km}км</div>`;
+    ]]]
+  batval: |
+    [[[
+      const p = states['sensor.evolute_battery_percentage']?.state ?? '-';
+      const km = states['sensor.evolute_remains_mileage_battery']?.state ?? states['sensor.evolute_raw_data']?.attributes?.remainsMileage ?? '-';
+      return `<div style="font-size:22px;font-weight:500;line-height:1.05;">${p}% / ${km}км</div>`;
+    ]]]
+  fuellab: топливо
+  batlab: батарея
+  tval: |
+    [[[
+      const v = states['sensor.evolute_coolant_temp']?.state ?? '-';
+      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${v}°C</div>`;
+    ]]]
+  vval: |
+    [[[
+      const v = Number(states['sensor.evolute_12vbattery_voltage']?.state ?? 0);
+      const formatted = Number.isFinite(v) && v > 0 ? v.toFixed(2) : '-';
+      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${formatted} В</div>`;
+    ]]]
+  oval: |
+    [[[
+      const v = states['sensor.evolute_odometer']?.state ?? '-';
+      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${v} км</div>`;
+    ]]]
+  tlab: |
+    <div style="line-height:1.05">охлаждающая<br>жидкость</div>
+  vlab: |
+    <div style="line-height:1.05">напряжение<br>АКБ</div>
+  olab: одометр
