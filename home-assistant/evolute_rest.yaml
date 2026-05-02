@@ -43,6 +43,11 @@
           - lastOnlineTime
           - sensorDataTime
           - time
+          - vin
+          - carModelName
+          - carModelModname
+          - carModelYear
+          - carModelColor
 # here
   - resource: http://127.0.0.1:12321/position/all
     method: GET

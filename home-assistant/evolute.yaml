@@ -112,6 +112,31 @@
         state: "{{ state_attr('sensor.evolute_raw_data', 'sensorDataTime') }}"
         icon: mdi:timeline-clock
 
+      - name: "Evolute VIN"
+        unique_id: evolute_vin
+        state: "{{ state_attr('sensor.evolute_raw_data', 'vin') }}"
+        icon: mdi:card-account-details
+
+      - name: "Evolute Car Model Name"
+        unique_id: evolute_car_model_name
+        state: "{{ state_attr('sensor.evolute_raw_data', 'carModelName') }}"
+        icon: mdi:car-info
+
+      - name: "Evolute Car Model Modname"
+        unique_id: evolute_car_model_modname
+        state: "{{ state_attr('sensor.evolute_raw_data', 'carModelModname') }}"
+        icon: mdi:car-shift-pattern
+
+      - name: "Evolute Car Model Year"
+        unique_id: evolute_car_model_year
+        state: "{{ state_attr('sensor.evolute_raw_data', 'carModelYear') }}"
+        icon: mdi:calendar
+
+      - name: "Evolute Car Model Color"
+        unique_id: evolute_car_model_color
+        state: "{{ state_attr('sensor.evolute_raw_data', 'carModelColor') }}"
+        icon: mdi:palette
+
       - name: "Evolute GPS Course"
         unique_id: evolute_gps_course
         state: "{{ state_attr('sensor.evolute_location_data', 'course') }}"

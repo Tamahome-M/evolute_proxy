@@ -19,6 +19,7 @@ API_KEY_RW = os.getenv("API_KEY_RW", "change_me_rw")
 TIMEOUT = int(os.getenv("TIMEOUT", 60))
 REFRESH_INTERVAL = int(os.getenv("REFRESH_INTERVAL", 600))
 SENSORS_REFRESH_INTERVAL = int(os.getenv("SENSORS_REFRESH_INTERVAL", 120))
+CAR_INFO_REFRESH_INTERVAL = int(os.getenv("CAR_INFO_REFRESH_INTERVAL", 3600))
 JSON_SUB = os.getenv("JSON_SUB", ".sensors")
 EVOLUTE_TOKEN_FILENAME = os.getenv("EVOLUTE_TOKEN_FILENAME", "evy-platform-access.txt")
 EVOLUTE_REFRESH_TOKEN_FILENAME = os.getenv("EVOLUTE_REFRESH_TOKEN_FILENAME", "evy-platform-refresh.txt")
@@ -37,6 +38,7 @@ STATUS_FILE = os.getenv("STATUS_FILE", "/data/status.json")
 
 EVOLUTE_REFRESH_URL = "https://app.evassist.ru/id-service/auth/refresh-token"
 EVOLUTE_SENSOR_URL = f"https://app.evassist.ru/car-service/tbox/{CAR_ID}/info"
+EVOLUTE_CAR_INFO_URL = f"https://app.evassist.ru/car-service/car/v2/{CAR_ID}"
 
 INTELLIGENT_ACTIONS = {
     "lock_close": ("centralLockingToggle", "centralLockingStatus", 1),
@@ -66,6 +68,7 @@ app = Flask(__name__)
 sensors_data = {}
 latest_sensors_root = {}
 latest_sensors_meta = {}
+latest_car_info = {}
 status_info = {
     "start_time": datetime.utcnow().isoformat(),
     "last_token_update": None,
@@ -236,6 +239,43 @@ def fetch_sensor_data():
     except Exception as e:
         logger.error(f"Failed to fetch sensor data: {e}")
 
+
+
+def fetch_car_info_data():
+    global latest_car_info
+    if not tokens_ok:
+        logger.warning("Car info data fetch skipped: tokens are not active")
+        return
+    try:
+        tokens = get_tokens()
+        cookies = {
+            "evy-platform-access": tokens["access"],
+            "evy-platform-refresh": tokens["refresh"]
+        }
+        headers = {
+            "User-Agent": USER_AGENT
+        }
+        response = requests.get(EVOLUTE_CAR_INFO_URL, headers=headers, cookies=cookies, timeout=TIMEOUT)
+        log_evolute_response("car_info_fetch", response)
+        response.raise_for_status()
+        payload = response.json()
+
+        if not isinstance(payload, dict):
+            logger.warning("Car info payload is not a JSON object")
+            return
+
+        car_model = payload.get("carModel") if isinstance(payload.get("carModel"), dict) else {}
+        latest_car_info = {
+            "vin": payload.get("vin"),
+            "carModelName": car_model.get("name"),
+            "carModelModname": car_model.get("modname"),
+            "carModelYear": car_model.get("modelYear"),
+            "carModelColor": car_model.get("color"),
+        }
+        logger.info("Car info data updated")
+    except Exception as e:
+        logger.error(f"Failed to fetch car info data: {e}")
+
 def periodic_refresh():
     refresh_tokens()
     t = threading.Timer(current_refresh_interval, periodic_refresh)
@@ -245,6 +285,12 @@ def periodic_refresh():
 def periodic_fetch():
     fetch_sensor_data()
     t = threading.Timer(SENSORS_REFRESH_INTERVAL, periodic_fetch)
+    t.daemon = True
+    t.start()
+
+def periodic_car_info_fetch():
+    fetch_car_info_data()
+    t = threading.Timer(CAR_INFO_REFRESH_INTERVAL, periodic_car_info_fetch)
     t.daemon = True
     t.start()
 
@@ -355,6 +401,10 @@ def get_all_sensors():
     _merge_scalar_root_fields(sensors_data)
     _merge_scalar_root_fields(latest_sensors_root)
     _merge_scalar_root_fields(latest_sensors_meta)
+
+    for key, value in latest_car_info.items():
+        if value is not None:
+            response_payload[key] = value
 
     # Keep backward-compatible alias for Home Assistant templates.
     sensor_time = response_payload.get("time")
@@ -536,6 +586,7 @@ if __name__ == "__main__":
 
     periodic_refresh()
     periodic_fetch()
+    periodic_car_info_fetch()
 
     logger.info("App started")
     app.run(host=LISTEN, port=PORT)
