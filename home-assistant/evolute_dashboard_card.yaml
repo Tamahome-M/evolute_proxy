@@ -41,6 +41,11 @@ cards:
       - sensor.evolute_diagnostics_code
       - sensor.evolute_last_online_time
       - sensor.evolute_sensor_data_time
+      - sensor.evolute_vin
+      - sensor.evolute_car_model_name
+      - sensor.evolute_car_model_modname
+      - sensor.evolute_car_model_year
+      - sensor.evolute_car_model_color
 
   - type: entities
     title: Все команды (raw)
