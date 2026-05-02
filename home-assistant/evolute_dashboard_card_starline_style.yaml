@@ -2,39 +2,85 @@ type: vertical-stack
 cards:
   - type: picture-elements
     image: /local/evolute/car-top.png
+    card_mod:
+      style: |
+        ha-card {
+          border-radius: 24px;
+          overflow: hidden;
+          background: radial-gradient(circle at 20% 20%, rgba(48, 88, 165, 0.45), rgba(11, 18, 33, 0.95));
+          border: 1px solid rgba(120, 168, 255, 0.35);
+          box-shadow: 0 10px 30px rgba(6, 12, 24, 0.6);
+        }
     elements:
-      - type: state-badge
+      - type: state-label
+        entity: device_tracker.evolute_car
+        attribute: friendly_name
+        style:
+          top: 9%
+          left: 12%
+          color: '#dfe9ff'
+          font-size: 18px
+          font-weight: 700
+
+      - type: state-label
+        entity: sensor.evolute_speed
+        prefix: Скорость
+        style:
+          top: 17%
+          left: 12%
+          color: '#89f0ff'
+          font-size: 14px
+          font-weight: 600
+
+      - type: state-label
+        entity: sensor.evolute_battery_percentage
+        prefix: Батарея
+        style:
+          top: 23%
+          left: 12%
+          color: '#7bff9d'
+          font-size: 14px
+          font-weight: 600
+
+      - type: state-icon
         entity: binary_sensor.evolute_online
         style:
           top: 10%
-          left: 10%
+          left: 88%
+          color: '#58d97b'
+
       - type: state-icon
         entity: binary_sensor.evolute_central_locking_engaged
         style:
-          top: 18%
+          top: 28%
           left: 50%
-          color: '#4caf50'
+          color: '#79a8ff'
+
       - type: state-icon
         entity: binary_sensor.evolute_trunk_open
         style:
-          top: 80%
+          top: 78%
           left: 50%
-          color: '#ff9800'
+          color: '#ffb54a'
+
       - type: state-label
-        entity: sensor.evolute_speed
+        entity: sensor.evolute_outside_temp
+        prefix: Улица
         style:
-          top: 50%
-          left: 20%
-          color: white
-          font-size: 20px
+          top: 88%
+          left: 16%
+          color: '#dfe9ff'
+          font-size: 13px
           font-weight: 600
+
       - type: state-label
-        entity: sensor.evolute_battery_percentage
+        entity: sensor.evolute_climate_current_temp
+        prefix: Салон
         style:
-          top: 50%
-          left: 80%
-          color: white
-          font-size: 20px
+          top: 88%
+          left: 84%
+          color: '#dfe9ff'
+          font-size: 13px
           font-weight: 600
 
   - type: grid
@@ -44,17 +90,23 @@ cards:
       - type: tile
         entity: sensor.evolute_remains_mileage_battery
         name: EV
+        color: green
       - type: tile
         entity: sensor.evolute_remains_mileage_fuel
         name: Fuel
+        color: amber
       - type: tile
         entity: sensor.evolute_climate_current_temp
         name: Салон
+        color: teal
       - type: tile
         entity: sensor.evolute_outside_temp
         name: Улица
+        color: blue
 
-  - type: horizontal-stack
+  - type: grid
+    columns: 4
+    square: false
     cards:
       - type: button
         name: Закрыть
@@ -68,6 +120,12 @@ cards:
         tap_action:
           action: call-service
           service: script.evolute_lock_open
+      - type: button
+        name: Багажник
+        icon: mdi:car-back
+        tap_action:
+          action: call-service
+          service: script.evolute_trunk_open
       - type: button
         name: Подготовка
         icon: mdi:car-clock
