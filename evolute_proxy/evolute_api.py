@@ -323,12 +323,17 @@ def get_all_sensors():
         return jsonify({"error": "No sensors data available"}), 404
 
     sensors = dict(sensors_data.get("sensorsData") or {})
+    # Include selected top-level status fields without overriding values that
+    # are already present in sensorsData.
+    for source_key, target_key in (
+        ("isOnline", "isOnline"),
+        ("lastOnlineTime", "lastOnlineTime"),
+        ("time", "sensorDataTime"),
+    ):
+        value = sensors_data.get(source_key)
+        if value is not None:
+            sensors.setdefault(target_key, value)
 
-    # Include selected top-level status fields so Home Assistant can expose
-    # availability and last online metadata from the same endpoint.
-    sensors["isOnline"] = sensors_data.get("isOnline")
-    sensors["lastOnlineTime"] = sensors_data.get("lastOnlineTime")
-    sensors["sensorDataTime"] = sensors_data.get("time")
 
     return jsonify(sensors)
 

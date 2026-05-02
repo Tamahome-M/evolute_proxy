@@ -253,6 +253,10 @@
 
       - name: "Evolute Online"
         unique_id: evolute_online
-        state: "{{ state_attr('sensor.evolute_raw_data', 'isOnline') in [true, 'true', 1, '1'] }}"
+        state: >-
+          {{ state_attr('sensor.evolute_raw_data', 'isOnline')
+             | default(false)
+             | string
+             | lower in ['true', '1', 'on'] }}
         device_class: connectivity
         icon: mdi:car-connected
