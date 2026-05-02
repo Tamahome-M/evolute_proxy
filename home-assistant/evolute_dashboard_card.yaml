@@ -11,29 +11,29 @@ cards:
       - binary_sensor.evolute_central_locking_engaged
       - binary_sensor.evolute_trunk_open
       - binary_sensor.evolute_headlights_on
-      - binary_sensor.evolute_door_fl_open
-      - binary_sensor.evolute_door_fr_open
-      - binary_sensor.evolute_door_rl_open
-      - binary_sensor.evolute_door_rr_open
+      - binary_sensor.evolute_door_front_left_open
+      - binary_sensor.evolute_door_front_right_open
+      - binary_sensor.evolute_door_rear_left_open
+      - binary_sensor.evolute_door_rear_right_open
       - binary_sensor.evolute_climate_front_defrost
       - sensor.evolute_battery_percentage
       - sensor.evolute_fuel_percentage
-      - sensor.evolute_remains_mileage_battery
-      - sensor.evolute_remains_mileage_fuel
+      - sensor.evolute_remaining_mileage_battery
+      - sensor.evolute_remaining_mileage_fuel
       - sensor.evolute_12vbattery_voltage
       - sensor.evolute_odometer
       - sensor.evolute_climate_current_temp
       - sensor.evolute_climate_target_temp
       - sensor.evolute_climate_fan_speed
-      - sensor.evolute_outside_temp
-      - sensor.evolute_inboard_temp
-      - sensor.evolute_coolant_temp
-      - sensor.evolute_battery_temp
+      - sensor.evolute_outside_temperature
+      - sensor.evolute_inboard_temperature
+      - sensor.evolute_coolant_temperature
+      - sensor.evolute_battery_temperature
       - sensor.evolute_speed
       - sensor.evolute_tachometer
       - sensor.evolute_gps_course
       - sensor.evolute_hdop
-      - sensor.evolute_gps_sats
+      - sensor.evolute_gps_satellites
       - sensor.evolute_altitude
       - sensor.evolute_latitude
       - sensor.evolute_longitude
