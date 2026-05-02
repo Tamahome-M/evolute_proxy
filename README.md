@@ -6,7 +6,6 @@
 
 - `repository.yaml` — метаданные репозитория add-ons.
 - `evolute_proxy/` — сам add-on (`config.yaml`, `Dockerfile`, `run.sh`, `DOCS.md`).
-- `evolute_api.py` — Flask-прокси, запускаемый add-on.
 
 ## Установка через интерфейс Home Assistant
 
@@ -24,8 +23,6 @@
 
 После изменения конфигурации нажмите **Save** и **Restart**.
 
-> `set_token.sh` оставлен только как legacy-утилита и для add-on больше не требуется.
-
 ## Команды управления TBox из Home Assistant
 
 В папке `home-assistant/` добавлены готовые конфиги для intelligent API эндпоинта `POST /tbox-i/<action_name>`:
@@ -41,6 +38,7 @@
 Добавлен готовый YAML-дашборд для Home Assistant:
 
 - `home-assistant/evolute_dashboard_card.yaml`
+- `home-assistant/evolute_dashboard_card_starline_style.yaml` — альтернативная карточка в стиле StarLine (крупный status-блок + быстрые кнопки + карта).
 
 Как использовать:
 

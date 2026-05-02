@@ -12,6 +12,7 @@ TIMEOUT="$(bashio::config 'timeout')"
 REFRESH_INTERVAL="$(bashio::config 'refresh_interval')"
 SENSORS_REFRESH_INTERVAL="$(bashio::config 'sensors_refresh_interval')"
 JSON_SUB="$(bashio::config 'json_sub')"
+DEBUG="$(bashio::config 'debug')"
 
 if bashio::var.is_empty "${CAR_ID}"; then
   bashio::log.fatal "Option 'car_id' is required"
@@ -30,6 +31,7 @@ export TIMEOUT
 export REFRESH_INTERVAL
 export SENSORS_REFRESH_INTERVAL
 export JSON_SUB
+export DEBUG
 export EVOLUTE_TOKEN_FILENAME="/data/evy-platform-access.txt"
 export EVOLUTE_REFRESH_TOKEN_FILENAME="/data/evy-platform-refresh.txt"
 export DUMP_FILE="/data/dump.json"

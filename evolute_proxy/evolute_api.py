@@ -53,8 +53,10 @@ INTELLIGENT_ACTIONS = {
 }
 
 
+LOG_LEVEL = logging.DEBUG if os.getenv("DEBUG", "false").lower() in ("1", "true", "yes", "on") else logging.INFO
+
 logging.basicConfig(
-    level=logging.INFO,
+    level=LOG_LEVEL,
     format="[%(levelname)s] %(asctime)s %(message)s"
 )
 logger = logging.getLogger(__name__)

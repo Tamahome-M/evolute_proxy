@@ -26,3 +26,7 @@ configuration:
   json_sub:
     name: JSON path
     description: Path to sensors object in response JSON.
+
+  debug:
+    name: Debug logging
+    description: Enable verbose debug logs for troubleshooting.
