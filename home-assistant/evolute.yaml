@@ -110,6 +110,11 @@
         icon: mdi:thermometer-auto
         state_class: measurement
 
+      - name: "Evolute Status Text"
+        unique_id: evolute_status_text
+        state: "{{ state_attr('sensor.evolute_raw_data', 'chipTitle') | default('unknown') }}"
+        icon: mdi:card-text-outline
+
       - name: "Evolute Last Online Time"
         unique_id: evolute_last_online_time
         state: "{{ state_attr('sensor.evolute_raw_data', 'lastOnlineTime') }}"
@@ -253,6 +258,10 @@
 
       - name: "Evolute Online"
         unique_id: evolute_online
-        state: "{{ state_attr('sensor.evolute_raw_data', 'isOnline') in [true, 'true', 1, '1'] }}"
+        state: >-
+          {{ state_attr('sensor.evolute_raw_data', 'isOnline')
+             | default(false)
+             | string
+             | lower in ['true', '1', 'on'] }}
         device_class: connectivity
         icon: mdi:car-connected
