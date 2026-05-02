@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.39
+
+- Fixed `/sensors/all` to preserve scalar metadata from both top-level and `sensors` roots of Evolute response (including `isOnline`).
+- Bumped add-on version to `1.0.39`.
+
+## 1.0.38
+
+- Fixed `/sensors/all` payload normalization so top-level metadata like `isOnline` is preserved with either JSON_SUB shape.
+- Bumped add-on version to `1.0.38`.
+
 ## 1.0.36
 
 - Bumped add-on version to `1.0.36`.
