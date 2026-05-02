@@ -323,7 +323,6 @@ def get_all_sensors():
         return jsonify({"error": "No sensors data available"}), 404
 
     sensors = dict(sensors_data.get("sensorsData") or {})
-
     # Include selected top-level status fields without overriding values that
     # are already present in sensorsData.
     for source_key, target_key in (
@@ -334,6 +333,7 @@ def get_all_sensors():
         value = sensors_data.get(source_key)
         if value is not None:
             sensors.setdefault(target_key, value)
+
 
     return jsonify(sensors)
 
