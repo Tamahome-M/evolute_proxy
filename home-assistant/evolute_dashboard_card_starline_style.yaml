@@ -64,7 +64,7 @@ cards:
           color: '#ffb54a'
 
       - type: state-label
-        entity: sensor.evolute_outside_temp
+        entity: sensor.evolute_outside_temperature
         prefix: Улица
         style:
           top: 88%
@@ -88,11 +88,11 @@ cards:
     square: false
     cards:
       - type: tile
-        entity: sensor.evolute_remains_mileage_battery
+        entity: sensor.evolute_remaining_mileage_battery
         name: EV
         color: green
       - type: tile
-        entity: sensor.evolute_remains_mileage_fuel
+        entity: sensor.evolute_remaining_mileage_fuel
         name: Fuel
         color: amber
       - type: tile
@@ -100,7 +100,7 @@ cards:
         name: Салон
         color: teal
       - type: tile
-        entity: sensor.evolute_outside_temp
+        entity: sensor.evolute_outside_temperature
         name: Улица
         color: blue
 
