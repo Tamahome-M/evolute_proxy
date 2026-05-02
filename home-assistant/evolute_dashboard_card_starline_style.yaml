@@ -1,7 +1,7 @@
 type: vertical-stack
 cards:
   - type: picture-elements
-    image: /local/evolute/car-top.png
+    image: /local/evolute/car-top.svg
     card_mod:
       style: |
         ha-card {
