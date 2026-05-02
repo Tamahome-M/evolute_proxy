@@ -16,6 +16,7 @@
 - `api_key_rw` — ключ для write API (`/tbox`, `/proxy`).
 - `access_token`, `refresh_token` — токены Evolute (из браузера).
 - `timeout`, `refresh_interval`, `sensors_refresh_interval`, `json_sub` — тонкая настройка.
+- `debug` — включает подробные debug-логи в журнале add-on.
 
 ## Как обновлять токены
 
