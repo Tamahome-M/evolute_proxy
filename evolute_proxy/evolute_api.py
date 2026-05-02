@@ -65,6 +65,7 @@ app = Flask(__name__)
 
 sensors_data = {}
 latest_sensors_root = {}
+latest_sensors_meta = {}
 status_info = {
     "start_time": datetime.utcnow().isoformat(),
     "last_token_update": None,
@@ -193,7 +194,7 @@ def refresh_tokens():
         logger.error(f"Failed to refresh tokens: {e}")
 
 def fetch_sensor_data():
-    global sensors_data, latest_sensors_root
+    global sensors_data, latest_sensors_root, latest_sensors_meta
     if not tokens_ok:
         logger.warning("Sensor data fetch skipped: tokens are not active")
         return
@@ -211,6 +212,18 @@ def fetch_sensor_data():
         response.raise_for_status()
         full_payload = response.json()
         latest_sensors_root = full_payload.get("sensors", {}) if isinstance(full_payload, dict) else {}
+
+        # Keep scalar metadata from both likely roots because Evolute may place
+        # fields like `isOnline` either in `sensors` or in the top-level payload.
+        latest_sensors_meta = {}
+        if isinstance(full_payload, dict):
+            for root in (full_payload, latest_sensors_root):
+                if not isinstance(root, dict):
+                    continue
+                for key, value in root.items():
+                    if key in ("sensorsData", "positionData") or isinstance(value, (dict, list)):
+                        continue
+                    latest_sensors_meta[key] = value
 
         data = full_payload
         keys = JSON_SUB.strip(".").split(".")
@@ -341,6 +354,7 @@ def get_all_sensors():
     # Merge scalar metadata from both cached root payload variants.
     _merge_scalar_root_fields(sensors_data)
     _merge_scalar_root_fields(latest_sensors_root)
+    _merge_scalar_root_fields(latest_sensors_meta)
 
     # Keep backward-compatible alias for Home Assistant templates.
     sensor_time = response_payload.get("time")
@@ -348,6 +362,8 @@ def get_all_sensors():
         sensor_time = sensors_data.get("time")
     if sensor_time is None and isinstance(latest_sensors_root, dict):
         sensor_time = latest_sensors_root.get("time")
+    if sensor_time is None and isinstance(latest_sensors_meta, dict):
+        sensor_time = latest_sensors_meta.get("time")
     if sensor_time is not None and "sensorDataTime" not in response_payload:
         response_payload["sensorDataTime"] = sensor_time
 
