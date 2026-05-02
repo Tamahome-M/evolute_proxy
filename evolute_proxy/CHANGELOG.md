@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.37
+
+- Fixed `/sensors/all` compatibility for nested `JSON_SUB` and explicit `isOnline`/`lastOnlineTime` fallback.
+- Bumped add-on version to `1.0.37`.
+
 ## 1.0.36
 
 - Bumped add-on version to `1.0.36`.

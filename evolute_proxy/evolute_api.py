@@ -65,6 +65,7 @@ app = Flask(__name__)
 
 sensors_data = {}
 latest_sensors_root = {}
+latest_full_payload = {}
 status_info = {
     "start_time": datetime.utcnow().isoformat(),
     "last_token_update": None,
@@ -193,7 +194,7 @@ def refresh_tokens():
         logger.error(f"Failed to refresh tokens: {e}")
 
 def fetch_sensor_data():
-    global sensors_data, latest_sensors_root
+    global sensors_data, latest_sensors_root, latest_full_payload
     if not tokens_ok:
         logger.warning("Sensor data fetch skipped: tokens are not active")
         return
@@ -210,6 +211,7 @@ def fetch_sensor_data():
         log_evolute_response("sensor_fetch", response)
         response.raise_for_status()
         full_payload = response.json()
+        latest_full_payload = full_payload if isinstance(full_payload, dict) else {}
         latest_sensors_root = full_payload.get("sensors", {}) if isinstance(full_payload, dict) else {}
 
         data = full_payload
@@ -313,8 +315,13 @@ def manual_refresh():
 @app.route("/sensors/all", methods=["GET"])
 def get_all_sensors():
     check_auth(request)
-    sensors = sensors_data.get("sensorsData")
-    if not sensors:
+    sensors = sensors_data.get("sensorsData") if isinstance(sensors_data, dict) else None
+    if not isinstance(sensors, dict):
+        # Supports JSON_SUB configured as `.sensors.sensorsData`
+        # where sensors_data itself is already the sensor map.
+        sensors = sensors_data if isinstance(sensors_data, dict) else None
+
+    if not sensors or not isinstance(sensors, dict):
         return jsonify({"error": "No sensors data available"}), 404
 
     response_payload = dict(sensors)
@@ -335,12 +342,21 @@ def get_all_sensors():
     # Fallback for setups where JSON_SUB points directly to sensorsData and
     # top-level flags (e.g. isOnline) are not present in sensors_data.
     _merge_scalar_root_fields(latest_sensors_root)
+    _merge_scalar_root_fields(latest_full_payload.get("sensors", {}))
 
     # Backward-compatible alias used by existing Home Assistant configs.
     if "time" in sensors_data and "sensorDataTime" not in response_payload:
         response_payload["sensorDataTime"] = sensors_data.get("time")
     elif "time" in latest_sensors_root and "sensorDataTime" not in response_payload:
         response_payload["sensorDataTime"] = latest_sensors_root.get("time")
+
+    # Explicit compatibility keys for Home Assistant templates.
+    if "isOnline" not in response_payload and isinstance(latest_sensors_root, dict):
+        if "isOnline" in latest_sensors_root:
+            response_payload["isOnline"] = latest_sensors_root.get("isOnline")
+    if "lastOnlineTime" not in response_payload and isinstance(latest_sensors_root, dict):
+        if "lastOnlineTime" in latest_sensors_root:
+            response_payload["lastOnlineTime"] = latest_sensors_root.get("lastOnlineTime")
 
     return jsonify(response_payload)
 
