@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.40
+
+- Added periodic car metadata fetch from `car-service/car/v2/{CAR_ID}` and exposed VIN/model fields in `/sensors/all`.
+- Added Home Assistant sensors/card entries for VIN, model, modname, year, and color.
+- Bumped add-on version to `1.0.40`.
+
 ## 1.0.39
 
 - Fixed `/sensors/all` to preserve scalar metadata from both top-level and `sensors` roots of Evolute response (including `isOnline`).
