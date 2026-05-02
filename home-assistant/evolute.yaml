@@ -161,6 +161,21 @@
         icon: mdi:speedometer
         state_class: measurement
 
+      - name: "Evolute Car Location"
+        unique_id: evolute_car_location
+        state: >-
+          {% set lat = states('sensor.evolute_latitude') %}
+          {% set lon = states('sensor.evolute_longitude') %}
+          {% if lat not in ['unknown','unavailable','none','None',''] and lon not in ['unknown','unavailable','none','None',''] %}
+            {{ lat }}, {{ lon }}
+          {% else %}
+            unavailable
+          {% endif %}
+        icon: mdi:map-marker
+        attributes:
+          latitude: "{{ states('sensor.evolute_latitude') | float(0) }}"
+          longitude: "{{ states('sensor.evolute_longitude') | float(0) }}"
+
   - binary_sensor:
       - name: "Evolute Ignition On"
         unique_id: evolute_ignition_on

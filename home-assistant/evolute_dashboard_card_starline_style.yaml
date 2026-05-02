@@ -1,0 +1,83 @@
+type: vertical-stack
+cards:
+  - type: picture-elements
+    image: /local/evolute/car-top.png
+    elements:
+      - type: state-badge
+        entity: binary_sensor.evolute_online
+        style:
+          top: 10%
+          left: 10%
+      - type: state-icon
+        entity: binary_sensor.evolute_central_locking_engaged
+        style:
+          top: 18%
+          left: 50%
+          color: '#4caf50'
+      - type: state-icon
+        entity: binary_sensor.evolute_trunk_open
+        style:
+          top: 80%
+          left: 50%
+          color: '#ff9800'
+      - type: state-label
+        entity: sensor.evolute_speed
+        style:
+          top: 50%
+          left: 20%
+          color: white
+          font-size: 20px
+          font-weight: 600
+      - type: state-label
+        entity: sensor.evolute_battery_percentage
+        style:
+          top: 50%
+          left: 80%
+          color: white
+          font-size: 20px
+          font-weight: 600
+
+  - type: grid
+    columns: 4
+    square: false
+    cards:
+      - type: tile
+        entity: sensor.evolute_remains_mileage_battery
+        name: EV
+      - type: tile
+        entity: sensor.evolute_remains_mileage_fuel
+        name: Fuel
+      - type: tile
+        entity: sensor.evolute_climate_current_temp
+        name: Салон
+      - type: tile
+        entity: sensor.evolute_outside_temp
+        name: Улица
+
+  - type: horizontal-stack
+    cards:
+      - type: button
+        name: Закрыть
+        icon: mdi:lock
+        tap_action:
+          action: call-service
+          service: script.evolute_lock_close
+      - type: button
+        name: Открыть
+        icon: mdi:lock-open-variant
+        tap_action:
+          action: call-service
+          service: script.evolute_lock_open
+      - type: button
+        name: Подготовка
+        icon: mdi:car-clock
+        tap_action:
+          action: call-service
+          service: script.evolute_prepare_on
+
+  - type: map
+    title: Локация
+    entities:
+      - entity: sensor.evolute_car_location
+    default_zoom: 13
+    hours_to_show: 24
