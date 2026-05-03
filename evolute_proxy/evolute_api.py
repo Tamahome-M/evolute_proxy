@@ -402,6 +402,32 @@ def get_all_sensors():
     _merge_scalar_root_fields(latest_sensors_root)
     _merge_scalar_root_fields(latest_sensors_meta)
 
+    def _merge_preparation_script_status(root):
+        if not isinstance(root, dict):
+            return
+        preparation_script = root.get("preparation_script")
+        if not isinstance(preparation_script, dict):
+            return
+        running = preparation_script.get("running")
+        available = preparation_script.get("available")
+        disabled = preparation_script.get("disabled")
+        end_time = preparation_script.get("endTime")
+        start_time = preparation_script.get("startTime")
+        if isinstance(running, bool):
+            response_payload["preparation_scriptIsrunning"] = running
+        if isinstance(available, bool):
+            response_payload["preparation_scriptAvailable"] = available
+        if isinstance(disabled, bool):
+            response_payload["preparation_scriptDisabled"] = disabled
+        if end_time is not None:
+            response_payload["preparation_scriptEndTime"] = end_time
+        if start_time is not None:
+            response_payload["preparation_scriptStartTime"] = start_time
+
+    _merge_preparation_script_status(sensors_data)
+    _merge_preparation_script_status(latest_sensors_root)
+    _merge_preparation_script_status(latest_sensors_meta)
+
     for key, value in latest_car_info.items():
         if value is not None:
             response_payload[key] = value

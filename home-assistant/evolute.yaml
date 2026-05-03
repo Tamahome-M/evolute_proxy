@@ -137,6 +137,17 @@
         state: "{{ state_attr('sensor.evolute_raw_data', 'carModelColor') }}"
         icon: mdi:palette
 
+      - name: "Evolute Preparation Script End Time"
+        unique_id: evolute_preparation_script_end_time
+        state: "{{ state_attr('sensor.evolute_raw_data', 'preparation_scriptEndTime') }}"
+        unit_of_measurement: "min"
+        icon: mdi:timer-outline
+
+      - name: "Evolute Preparation Script Start Time"
+        unique_id: evolute_preparation_script_start_time
+        state: "{{ state_attr('sensor.evolute_raw_data', 'preparation_scriptStartTime') }}"
+        icon: mdi:clock-start
+
       - name: "Evolute GPS Course"
         unique_id: evolute_gps_course
         state: "{{ state_attr('sensor.evolute_location_data', 'course') }}"
@@ -275,3 +286,18 @@
           {{ v in [true, 'true', 'True', 1, '1'] }}
         device_class: connectivity
         icon: mdi:car-connected
+
+      - name: "Evolute Preparation Script Running"
+        unique_id: evolute_preparation_script_running
+        state: "{{ state_attr('sensor.evolute_raw_data', 'preparation_scriptIsrunning') in [true, 'true', 'True', 1, '1'] }}"
+        icon: mdi:engine-outline
+
+      - name: "Evolute Preparation Script Available"
+        unique_id: evolute_preparation_script_available
+        state: "{{ state_attr('sensor.evolute_raw_data', 'preparation_scriptAvailable') in [true, 'true', 'True', 1, '1'] }}"
+        icon: mdi:check-decagram
+
+      - name: "Evolute Preparation Script Disabled"
+        unique_id: evolute_preparation_script_disabled
+        state: "{{ state_attr('sensor.evolute_raw_data', 'preparation_scriptDisabled') in [true, 'true', 'True', 1, '1'] }}"
+        icon: mdi:cancel
