@@ -16,6 +16,9 @@ cards:
       - binary_sensor.evolute_door_rear_left_open
       - binary_sensor.evolute_door_rear_right_open
       - binary_sensor.evolute_climate_front_defrost
+      - binary_sensor.evolute_preparation_script_running
+      - binary_sensor.evolute_preparation_script_available
+      - binary_sensor.evolute_preparation_script_disabled
       - sensor.evolute_battery_percentage
       - sensor.evolute_fuel_percentage
       - sensor.evolute_remaining_mileage_battery
@@ -46,6 +49,8 @@ cards:
       - sensor.evolute_car_model_modname
       - sensor.evolute_car_model_year
       - sensor.evolute_car_model_color
+      - sensor.evolute_preparation_script_end_time
+      - sensor.evolute_preparation_script_start_time
 
   - type: entities
     title: Все команды (raw)

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.41
+
+- Added preparation script fields to `/sensors/all`: `preparation_scriptIsrunning`, `preparation_scriptAvailable`, `preparation_scriptDisabled`, `preparation_scriptEndTime`, `preparation_scriptStartTime`.
+- Added Home Assistant raw attributes and entities for preparation script status/timestamps.
+- Updated dashboard card to include new preparation script sensors.
+- Bumped add-on version to `1.0.41`.
+
 ## 1.0.40
 
 - Added periodic car metadata fetch from `car-service/car/v2/{CAR_ID}` and exposed VIN/model fields in `/sensors/all`.
