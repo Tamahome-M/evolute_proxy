@@ -48,6 +48,11 @@
           - carModelModname
           - carModelYear
           - carModelColor
+          - preparation_scriptIsrunning
+          - preparation_scriptAvailable
+          - preparation_scriptDisabled
+          - preparation_scriptEndTime
+          - preparation_scriptStartTime
 # here
   - resource: http://127.0.0.1:12321/position/all
     method: GET
