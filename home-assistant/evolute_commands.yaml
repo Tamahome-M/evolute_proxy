@@ -57,11 +57,13 @@ evolute_trunk_close:
 evolute_prepare_on:
   url: "http://127.0.0.1:12321/tbox-i/prepare_on"
   method: POST
+  timeout: 30
   headers:
     X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
 
 evolute_prepare_off:
   url: "http://127.0.0.1:12321/tbox-i/prepare_off"
   method: POST
+  timeout: 30
   headers:
     X-API-Key: "{{ states('input_text.evolute_proxy_token_rw') }}"
