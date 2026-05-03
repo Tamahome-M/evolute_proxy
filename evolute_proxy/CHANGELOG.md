@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.42
+
+- Fixed `/sensors/all` preparation script fields exposure for payload variants where `preparation_script` exists only at the top level.
+- Added merge from cached full sensor payload to ensure `preparation_scriptIsrunning`, `preparation_scriptAvailable`, `preparation_scriptDisabled`, `preparation_scriptEndTime`, `preparation_scriptStartTime` are present.
+- Bumped add-on version to `1.0.42`.
+
 ## 1.0.41
 
 - Added preparation script fields to `/sensors/all`: `preparation_scriptIsrunning`, `preparation_scriptAvailable`, `preparation_scriptDisabled`, `preparation_scriptEndTime`, `preparation_scriptStartTime`.

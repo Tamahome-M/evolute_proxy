@@ -68,6 +68,7 @@ app = Flask(__name__)
 sensors_data = {}
 latest_sensors_root = {}
 latest_sensors_meta = {}
+latest_sensors_full = {}
 latest_car_info = {}
 status_info = {
     "start_time": datetime.utcnow().isoformat(),
@@ -197,7 +198,7 @@ def refresh_tokens():
         logger.error(f"Failed to refresh tokens: {e}")
 
 def fetch_sensor_data():
-    global sensors_data, latest_sensors_root, latest_sensors_meta
+    global sensors_data, latest_sensors_root, latest_sensors_meta, latest_sensors_full
     if not tokens_ok:
         logger.warning("Sensor data fetch skipped: tokens are not active")
         return
@@ -214,6 +215,7 @@ def fetch_sensor_data():
         log_evolute_response("sensor_fetch", response)
         response.raise_for_status()
         full_payload = response.json()
+        latest_sensors_full = full_payload if isinstance(full_payload, dict) else {}
         latest_sensors_root = full_payload.get("sensors", {}) if isinstance(full_payload, dict) else {}
 
         # Keep scalar metadata from both likely roots because Evolute may place
@@ -425,6 +427,7 @@ def get_all_sensors():
             response_payload["preparation_scriptStartTime"] = start_time
 
     _merge_preparation_script_status(sensors_data)
+    _merge_preparation_script_status(latest_sensors_full)
     _merge_preparation_script_status(latest_sensors_root)
     _merge_preparation_script_status(latest_sensors_meta)
 
