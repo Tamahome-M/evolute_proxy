@@ -6,8 +6,8 @@ styles:
   card:
     - border-radius: 22px
     - padding: 16px 16px 12px 16px
-    - background: '#f4f4f5'
-    - box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06)
+    - background: var(--card-background-color, #f4f4f5)
+    - box-shadow: var(--ha-card-box-shadow, 0 2px 8px rgba(0, 0, 0, 0.06))
   grid:
     - grid-template-areas: |
         "title status status status status"
@@ -27,48 +27,48 @@ styles:
       - font-size: 24px
       - line-height: 1
       - font-weight: 500
-      - color: '#161616'
+      - color: var(--primary-text-color, #161616)
     status:
       - justify-self: end
       - align-self: center
     fuelval:
       - justify-self: start
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
     batval:
       - justify-self: start
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
     fuellab:
       - justify-self: start
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 16px
     batlab:
       - justify-self: start
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 16px
     tval:
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
     vval:
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
     oval:
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
     outval:
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
     inval:
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
     tlab:
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     vlab:
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     olab:
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     outlab:
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     inlab:
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     controls:
       - margin-top: 10px
@@ -117,40 +117,43 @@ custom_fields:
       const raw = states['sensor.evolute_coolant_temperature']?.state;
       const n = Number(raw);
       const formatted = Number.isFinite(n) ? n.toFixed(1) : '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${formatted}°C</div>`;
+      return `<div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_coolant_temperature';" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   vval: |
     [[[
       const v = Number(states['sensor.evolute_12vbattery_voltage']?.state ?? 0);
       const formatted = Number.isFinite(v) && v > 0 ? v.toFixed(2) : '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${formatted} В</div>`;
+      return `<div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_12vbattery_voltage';" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted} В</div>`;
     ]]]
   oval: |
     [[[
       const v = states['sensor.evolute_odometer']?.state ?? '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${v} км</div>`;
+      return `<div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_odometer';" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${v} км</div>`;
     ]]]
   outval: |
     [[[
       const raw = states['sensor.evolute_outside_temperature']?.state;
       const n = Number(raw);
       const formatted = Number.isFinite(n) ? n.toFixed(1) : '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${formatted}°C</div>`;
+      return `<div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_outside_temperature';" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   inval: |
     [[[
       const raw = states['sensor.evolute_inboard_temperature']?.state;
       const n = Number(raw);
       const formatted = Number.isFinite(n) ? n.toFixed(1) : '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${formatted}°C</div>`;
+      return `<div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_inboard_temperature';" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   tlab: |
-    <div style="line-height:1.05">охлаждающая<br>жидкость</div>
+    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_coolant_temperature';" style="line-height:1.05;cursor:pointer">охлаждающая<br>жидкость</div>
   vlab: |
-    <div style="line-height:1.05">напряжение<br>АКБ</div>
-  olab: одометр
-  outlab: улица
-  inlab: салон
+    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_12vbattery_voltage';" style="line-height:1.05;cursor:pointer">напряжение<br>АКБ</div>
+  olab: |
+    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_odometer';" style="cursor:pointer">одометр</div>
+  outlab: |
+    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_outside_temperature';" style="cursor:pointer">улица</div>
+  inlab: |
+    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_inboard_temperature';" style="cursor:pointer">салон</div>
   controls:
     card:
       type: grid
