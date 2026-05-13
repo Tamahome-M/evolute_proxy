@@ -10,14 +10,14 @@ styles:
     - box-shadow: var(--ha-card-box-shadow, 0 2px 8px rgba(0, 0, 0, 0.06))
   grid:
     - grid-template-areas: |
-        "title status status status status"
-        "fuelbar fuelbar fuelbar batbar batbar"
-        "fuelval fuelval fuelval batval batval"
-        "fuellab fuellab fuellab batlab batlab"
-        "tval vval oval outval inval"
-        "tlab vlab olab outlab inlab"
-        "controls controls controls controls controls"
-    - grid-template-columns: repeat(5, 1fr)
+        "title status status status"
+        "fuelbar fuelbar batbar batbar"
+        "fuelval fuelval batval batval"
+        "fuellab fuellab batlab batlab"
+        "tval vval outval inval"
+        "tlab vlab outlab inlab"
+        "controls controls controls controls"
+    - grid-template-columns: repeat(4, 1fr)
     - row-gap: 6px
     - column-gap: 10px
   custom_fields:
@@ -49,8 +49,6 @@ styles:
       - color: var(--primary-text-color, #222)
     vval:
       - color: var(--primary-text-color, #222)
-    oval:
-      - color: var(--primary-text-color, #222)
     outval:
       - color: var(--primary-text-color, #222)
     inval:
@@ -59,9 +57,6 @@ styles:
       - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     vlab:
-      - color: var(--secondary-text-color, #8f9198)
-      - font-size: 14px
-    olab:
       - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     outlab:
@@ -134,8 +129,6 @@ custom_fields:
       const formatted = Number.isFinite(v) && v > 0 ? v.toFixed(2) : '-';
       return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_12vbattery_voltage'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted} В</div>`;
     ]]]
-  oval: |
-    ' '
   outval: |
     [[[
       const raw = states['sensor.evolute_outside_temperature']?.state;
@@ -154,7 +147,6 @@ custom_fields:
     <div style="line-height:1.05">охлаждающая<br>жидкость</div>
   vlab: |
     <div style="line-height:1.05">напряжение<br>АКБ</div>
-  olab: ' '
   outlab: улица
   inlab: салон
   controls:
