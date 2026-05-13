@@ -122,27 +122,27 @@ custom_fields:
       const raw = states['sensor.evolute_coolant_temperature']?.state;
       const n = Number(raw);
       const formatted = Number.isFinite(n) ? n.toFixed(1) : '-';
-      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_coolant_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
+      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_coolant_temperature'},bubbles:true,composed:true}));" ontouchend="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_coolant_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   vval: |
     [[[
       const v = Number(states['sensor.evolute_12vbattery_voltage']?.state ?? 0);
       const formatted = Number.isFinite(v) && v > 0 ? v.toFixed(2) : '-';
-      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_12vbattery_voltage'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted} В</div>`;
+      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_12vbattery_voltage'},bubbles:true,composed:true}));" ontouchend="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_12vbattery_voltage'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted} В</div>`;
     ]]]
   outval: |
     [[[
       const raw = states['sensor.evolute_outside_temperature']?.state;
       const n = Number(raw);
       const formatted = Number.isFinite(n) ? n.toFixed(1) : '-';
-      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_outside_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
+      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_outside_temperature'},bubbles:true,composed:true}));" ontouchend="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_outside_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   inval: |
     [[[
       const raw = states['sensor.evolute_inboard_temperature']?.state;
       const n = Number(raw);
       const formatted = Number.isFinite(n) ? n.toFixed(1) : '-';
-      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_inboard_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
+      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_inboard_temperature'},bubbles:true,composed:true}));" ontouchend="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_inboard_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   tlab: |
     <div style="line-height:1.05">охлаждающая<br>жидкость</div>
