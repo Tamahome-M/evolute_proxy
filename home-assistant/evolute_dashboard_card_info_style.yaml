@@ -145,15 +145,12 @@ custom_fields:
       return `<div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_inboard_temperature';" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   tlab: |
-    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_coolant_temperature';" style="line-height:1.05;cursor:pointer">охлаждающая<br>жидкость</div>
+    <div style="line-height:1.05">охлаждающая<br>жидкость</div>
   vlab: |
-    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_12vbattery_voltage';" style="line-height:1.05;cursor:pointer">напряжение<br>АКБ</div>
-  olab: |
-    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_odometer';" style="cursor:pointer">одометр</div>
-  outlab: |
-    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_outside_temperature';" style="cursor:pointer">улица</div>
-  inlab: |
-    <div onclick="event.stopPropagation();window.location.href='/history?entity_id=sensor.evolute_inboard_temperature';" style="cursor:pointer">салон</div>
+    <div style="line-height:1.05">напряжение<br>АКБ</div>
+  olab: одометр
+  outlab: улица
+  inlab: салон
   controls:
     card:
       type: grid
