@@ -6,19 +6,18 @@ styles:
   card:
     - border-radius: 22px
     - padding: 16px 16px 12px 16px
-    - background: '#f4f4f5'
-    - box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06)
+    - background: var(--card-background-color, #f4f4f5)
+    - box-shadow: var(--ha-card-box-shadow, 0 2px 8px rgba(0, 0, 0, 0.06))
   grid:
     - grid-template-areas: |
-        "title status status status status"
-        "fuelbar fuelbar fuelbar batbar batbar"
-        "fuelval fuelval fuelval batval batval"
-        "fuellab fuellab fuellab batlab batlab"
-        "tval vval oval outval inval"
-        "tlab vlab olab outlab inlab"
-        "controls controls controls controls controls"
-    - grid-template-columns: repeat(5, 1fr)
-    - row-gap: 6px
+        "title status status status"
+        "fuelbar fuelbar batbar batbar"
+        "fuelval fuelval batval batval"
+        "tval vval outval inval"
+        "tlab vlab outlab inlab"
+        "controls controls controls controls"
+    - grid-template-columns: repeat(4, 1fr)
+    - row-gap: 8px
     - column-gap: 10px
   custom_fields:
     title:
@@ -27,66 +26,67 @@ styles:
       - font-size: 24px
       - line-height: 1
       - font-weight: 500
-      - color: '#161616'
+      - color: var(--primary-text-color, #161616)
     status:
       - justify-self: end
       - align-self: center
     fuelval:
       - justify-self: start
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
     batval:
       - justify-self: start
-      - color: '#222'
-    fuellab:
-      - justify-self: start
-      - color: '#8f9198'
-      - font-size: 16px
-    batlab:
-      - justify-self: start
-      - color: '#8f9198'
-      - font-size: 16px
+      - color: var(--primary-text-color, #222)
     tval:
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
+      - margin-top: 8px
     vval:
-      - color: '#222'
-    oval:
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
+      - margin-top: 8px
     outval:
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
+      - margin-top: 8px
     inval:
-      - color: '#222'
+      - color: var(--primary-text-color, #222)
+      - margin-top: 8px
     tlab:
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     vlab:
-      - color: '#8f9198'
-      - font-size: 14px
-    olab:
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     outlab:
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     inlab:
-      - color: '#8f9198'
+      - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
     controls:
       - margin-top: 10px
 custom_fields:
   title: |
     [[[
-      const name = states['sensor.evolute_car_model_name']?.state;
-      const year = states['sensor.evolute_car_model_year']?.state;
-      const model = name && name !== 'unknown' && name !== 'unavailable' ? name : 'Evolute';
-      const yearSuffix = year && year !== 'unknown' && year !== 'unavailable' ? ` (${year})` : '';
-      return `${model}${yearSuffix}`;
+      const odometer = states['sensor.evolute_odometer']?.state ?? '-';
+      const online = states['binary_sensor.evolute_online']?.state === 'on';
+      const bg = online ? '#5cbc63' : '#a8a8a8';
+      return `
+        <div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_odometer'},bubbles:true,composed:true}));" style="display:flex;align-items:center;gap:8px;line-height:1.05;cursor:pointer;">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:${bg};flex:0 0 auto;"></div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:24px;font-weight:600;">
+            <ha-icon icon="mdi:counter" style="--mdc-icon-size:24px;color:var(--state-icon-color,#3f8fc7);"></ha-icon>
+            <span>${odometer} км</span>
+          </div>
+        </div>
+      `;
     ]]]
   status: |
     [[[
-      const online = states['binary_sensor.evolute_online']?.state === 'on';
-      const bg = online ? '#5cbc63' : '#a8a8a8';
-      const txt = online ? 'Доступен ✓' : 'Недоступен';
-      return `<div style="display:inline-flex;align-items:center;gap:10px;"><span style="width:13px;height:13px;border-radius:50%;background:${bg};display:inline-block"></span><span style="background:${bg};color:#fff;font-size:20px;line-height:1;padding:5px 14px;border-radius:999px;">${txt}</span></div>`;
+      const name = states['sensor.evolute_car_model_name']?.state;
+      const year = states['sensor.evolute_car_model_year']?.state;
+      const vin = states['sensor.evolute_vin']?.state;
+      const model = name && name !== 'unknown' && name !== 'unavailable' ? name : 'Evolute';
+      const yearSuffix = year && year !== 'unknown' && year !== 'unavailable' ? ` (${year})` : '';
+      const vinLine = vin && vin !== 'unknown' && vin !== 'unavailable' ? vin : '-';
+      return `<div style="display:flex;flex-direction:column;gap:4px;line-height:1.05;text-align:right;"><div style="font-size:24px;font-weight:500;color:var(--primary-text-color,#161616);">${model}${yearSuffix}</div><div style="font-size:14px;font-weight:400;color:var(--secondary-text-color,#8f9198);">${vinLine}</div></div>`;
     ]]]
   fuelbar: |
     [[[
@@ -110,47 +110,41 @@ custom_fields:
       const km = states['sensor.evolute_remains_mileage_battery']?.state ?? states['sensor.evolute_raw_data']?.attributes?.remainsMileage ?? '-';
       return `<div style="font-size:22px;font-weight:500;line-height:1.05;">${p}% / ${km}км</div>`;
     ]]]
-  fuellab: топливо
-  batlab: батарея
   tval: |
     [[[
       const raw = states['sensor.evolute_coolant_temperature']?.state;
       const n = Number(raw);
       const formatted = Number.isFinite(n) ? n.toFixed(1) : '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${formatted}°C</div>`;
+      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_coolant_temperature'},bubbles:true,composed:true}));" ontouchend="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_coolant_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   vval: |
     [[[
       const v = Number(states['sensor.evolute_12vbattery_voltage']?.state ?? 0);
       const formatted = Number.isFinite(v) && v > 0 ? v.toFixed(2) : '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${formatted} В</div>`;
-    ]]]
-  oval: |
-    [[[
-      const v = states['sensor.evolute_odometer']?.state ?? '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${v} км</div>`;
+      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_12vbattery_voltage'},bubbles:true,composed:true}));" ontouchend="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_12vbattery_voltage'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted} В</div>`;
     ]]]
   outval: |
     [[[
       const raw = states['sensor.evolute_outside_temperature']?.state;
       const n = Number(raw);
       const formatted = Number.isFinite(n) ? n.toFixed(1) : '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${formatted}°C</div>`;
+      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_outside_temperature'},bubbles:true,composed:true}));" ontouchend="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_outside_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   inval: |
     [[[
       const raw = states['sensor.evolute_inboard_temperature']?.state;
       const n = Number(raw);
       const formatted = Number.isFinite(n) ? n.toFixed(1) : '-';
-      return `<div style="font-size:20px;font-weight:500;line-height:1.05;">${formatted}°C</div>`;
+      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_inboard_temperature'},bubbles:true,composed:true}));" ontouchend="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_inboard_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   tlab: |
-    <div style="line-height:1.05">охлаждающая<br>жидкость</div>
+    <ha-icon icon="mdi:thermometer-water" style="--mdc-icon-size:18px;color:var(--secondary-text-color,#8f9198);"></ha-icon>
   vlab: |
-    <div style="line-height:1.05">напряжение<br>АКБ</div>
-  olab: одометр
-  outlab: улица
-  inlab: салон
+    <ha-icon icon="mdi:car-battery" style="--mdc-icon-size:18px;color:var(--secondary-text-color,#8f9198);"></ha-icon>
+  outlab: |
+    <ha-icon icon="mdi:weather-partly-cloudy" style="--mdc-icon-size:18px;color:var(--secondary-text-color,#8f9198);"></ha-icon>
+  inlab: |
+    <ha-icon icon="mdi:car-seat" style="--mdc-icon-size:18px;color:var(--secondary-text-color,#8f9198);"></ha-icon>
   controls:
     card:
       type: grid
@@ -160,7 +154,7 @@ custom_fields:
         - type: conditional
           conditions:
             - entity: binary_sensor.evolute_central_locking_engaged
-              state: 'off'
+              state: 'on'
           card:
             type: button
             name: Открыть
@@ -171,7 +165,7 @@ custom_fields:
         - type: conditional
           conditions:
             - entity: binary_sensor.evolute_central_locking_engaged
-              state: 'on'
+              state: 'off'
           card:
             type: button
             name: Закрыть
