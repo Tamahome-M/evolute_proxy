@@ -17,7 +17,7 @@ styles:
         "tlab vlab outlab inlab"
         "controls controls controls controls"
     - grid-template-columns: repeat(4, 1fr)
-    - row-gap: 6px
+    - row-gap: 8px
     - column-gap: 10px
   custom_fields:
     title:
@@ -38,12 +38,16 @@ styles:
       - color: var(--primary-text-color, #222)
     tval:
       - color: var(--primary-text-color, #222)
+      - margin-top: 8px
     vval:
       - color: var(--primary-text-color, #222)
+      - margin-top: 8px
     outval:
       - color: var(--primary-text-color, #222)
+      - margin-top: 8px
     inval:
       - color: var(--primary-text-color, #222)
+      - margin-top: 8px
     tlab:
       - color: var(--secondary-text-color, #8f9198)
       - font-size: 14px
@@ -134,11 +138,13 @@ custom_fields:
       return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_inboard_temperature'},bubbles:true,composed:true}));" ontouchend="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_inboard_temperature'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted}°C</div>`;
     ]]]
   tlab: |
-    <div style="line-height:1.05">охлаждающая<br>жидкость</div>
+    <ha-icon icon="mdi:thermometer-water" style="--mdc-icon-size:18px;color:var(--secondary-text-color,#8f9198);"></ha-icon>
   vlab: |
-    <div style="line-height:1.05">напряжение<br>АКБ</div>
-  outlab: улица
-  inlab: салон
+    <ha-icon icon="mdi:car-battery" style="--mdc-icon-size:18px;color:var(--secondary-text-color,#8f9198);"></ha-icon>
+  outlab: |
+    <ha-icon icon="mdi:weather-partly-cloudy" style="--mdc-icon-size:18px;color:var(--secondary-text-color,#8f9198);"></ha-icon>
+  inlab: |
+    <ha-icon icon="mdi:car-seat" style="--mdc-icon-size:18px;color:var(--secondary-text-color,#8f9198);"></ha-icon>
   controls:
     card:
       type: grid
