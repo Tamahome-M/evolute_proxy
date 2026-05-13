@@ -71,27 +71,27 @@ custom_fields:
   title: |
     [[[
       const odometer = states['sensor.evolute_odometer']?.state ?? '-';
-      const name = states['sensor.evolute_car_model_name']?.state;
-      const year = states['sensor.evolute_car_model_year']?.state;
-      const vin = states['sensor.evolute_vin']?.state;
-      const model = name && name !== 'unknown' && name !== 'unavailable' ? name : 'Evolute';
-      const yearSuffix = year && year !== 'unknown' && year !== 'unavailable' ? ` (${year})` : '';
-      const vinPrefix = vin && vin !== 'unknown' && vin !== 'unavailable' ? `${vin} · ` : '';
+      const online = states['binary_sensor.evolute_online']?.state === 'on';
+      const bg = online ? '#5cbc63' : '#a8a8a8';
       return `
-        <div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_odometer'},bubbles:true,composed:true}));" style="display:flex;flex-direction:column;gap:4px;line-height:1.05;cursor:pointer;">
+        <div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_odometer'},bubbles:true,composed:true}));" style="display:flex;align-items:center;gap:8px;line-height:1.05;cursor:pointer;">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:${bg};flex:0 0 auto;"></div>
           <div style="display:flex;align-items:center;gap:8px;font-size:24px;font-weight:600;">
             <ha-icon icon="mdi:counter" style="--mdc-icon-size:24px;color:var(--state-icon-color,#3f8fc7);"></ha-icon>
             <span>${odometer} км</span>
           </div>
-          <div style="font-size:14px;font-weight:400;color:var(--secondary-text-color,#8f9198);">${vinPrefix}${model}${yearSuffix}</div>
         </div>
       `;
     ]]]
   status: |
     [[[
-      const online = states['binary_sensor.evolute_online']?.state === 'on';
-      const bg = online ? '#5cbc63' : '#a8a8a8';
-      return `<div style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:${bg};"></div>`;
+      const name = states['sensor.evolute_car_model_name']?.state;
+      const year = states['sensor.evolute_car_model_year']?.state;
+      const vin = states['sensor.evolute_vin']?.state;
+      const model = name && name !== 'unknown' && name !== 'unavailable' ? name : 'Evolute';
+      const yearSuffix = year && year !== 'unknown' && year !== 'unavailable' ? ` (${year})` : '';
+      const vinLine = vin && vin !== 'unknown' && vin !== 'unavailable' ? vin : '-';
+      return `<div style="display:flex;flex-direction:column;gap:4px;line-height:1.05;text-align:right;"><div style="font-size:24px;font-weight:500;color:var(--primary-text-color,#161616);">${model}${yearSuffix}</div><div style="font-size:14px;font-weight:400;color:var(--secondary-text-color,#8f9198);">${vinLine}</div></div>`;
     ]]]
   fuelbar: |
     [[[
