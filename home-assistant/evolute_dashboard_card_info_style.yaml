@@ -166,7 +166,7 @@ custom_fields:
         - type: conditional
           conditions:
             - entity: binary_sensor.evolute_central_locking_engaged
-              state: 'off'
+              state: 'on'
           card:
             type: button
             name: Открыть
