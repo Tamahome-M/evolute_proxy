@@ -75,11 +75,20 @@ styles:
 custom_fields:
   title: |
     [[[
+      const odometer = states['sensor.evolute_odometer']?.state ?? '-';
       const name = states['sensor.evolute_car_model_name']?.state;
       const year = states['sensor.evolute_car_model_year']?.state;
       const model = name && name !== 'unknown' && name !== 'unavailable' ? name : 'Evolute';
       const yearSuffix = year && year !== 'unknown' && year !== 'unavailable' ? ` (${year})` : '';
-      return `${model}${yearSuffix}`;
+      return `
+        <div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_odometer'},bubbles:true,composed:true}));" style="display:flex;flex-direction:column;gap:4px;line-height:1.05;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:28px;font-weight:600;">
+            <ha-icon icon="mdi:counter" style="--mdc-icon-size:24px;color:var(--state-icon-color,#3f8fc7);"></ha-icon>
+            <span>${odometer} км</span>
+          </div>
+          <div style="font-size:14px;font-weight:400;color:var(--secondary-text-color,#8f9198);">${model}${yearSuffix}</div>
+        </div>
+      `;
     ]]]
   status: |
     [[[
@@ -126,10 +135,7 @@ custom_fields:
       return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_12vbattery_voltage'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${formatted} В</div>`;
     ]]]
   oval: |
-    [[[
-      const v = states['sensor.evolute_odometer']?.state ?? '-';
-      return `<div onclick="event.stopPropagation();this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:'sensor.evolute_odometer'},bubbles:true,composed:true}));" style="font-size:20px;font-weight:500;line-height:1.05;cursor:pointer;">${v} км</div>`;
-    ]]]
+    ' '
   outval: |
     [[[
       const raw = states['sensor.evolute_outside_temperature']?.state;
@@ -148,7 +154,7 @@ custom_fields:
     <div style="line-height:1.05">охлаждающая<br>жидкость</div>
   vlab: |
     <div style="line-height:1.05">напряжение<br>АКБ</div>
-  olab: одометр
+  olab: ' '
   outlab: улица
   inlab: салон
   controls:
