@@ -13,7 +13,6 @@ styles:
         "title status status status"
         "fuelbar fuelbar batbar batbar"
         "fuelval fuelval batval batval"
-        "fuellab fuellab batlab batlab"
         "tval vval outval inval"
         "tlab vlab outlab inlab"
         "controls controls controls controls"
@@ -37,14 +36,6 @@ styles:
     batval:
       - justify-self: start
       - color: var(--primary-text-color, #222)
-    fuellab:
-      - justify-self: start
-      - color: var(--secondary-text-color, #8f9198)
-      - font-size: 16px
-    batlab:
-      - justify-self: start
-      - color: var(--secondary-text-color, #8f9198)
-      - font-size: 16px
     tval:
       - color: var(--primary-text-color, #222)
     vval:
@@ -115,8 +106,6 @@ custom_fields:
       const km = states['sensor.evolute_remains_mileage_battery']?.state ?? states['sensor.evolute_raw_data']?.attributes?.remainsMileage ?? '-';
       return `<div style="font-size:22px;font-weight:500;line-height:1.05;">${p}% / ${km}км</div>`;
     ]]]
-  fuellab: топливо
-  batlab: батарея
   tval: |
     [[[
       const raw = states['sensor.evolute_coolant_temperature']?.state;
