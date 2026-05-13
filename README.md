@@ -49,7 +49,8 @@
 
 > Карточка использует сущности из `home-assistant/evolute.yaml` и скрипты из `home-assistant/evolute_scripts.yaml`.
 Примеры: 
-- evolute_dashboard_card_info_style.yaml
-<img width="656" height="442" alt="Снимок экрана от 2026-05-02 22-51-08" src="https://github.com/user-attachments/assets/ad5258f9-8b3a-470b-bf4b-c0014bc29ea5" />
+- evolute_dashboard_card_info_style.yaml (обновлённый скриншот, последние 4 символа VIN замаскированы)
+
+![evolute_dashboard_card_info_style_vin_masked](https://github.com/user-attachments/assets/ad5258f9-8b3a-470b-bf4b-c0014bc29ea5)
 - evolute_dashboard_card.yaml
 <img width="505" height="1854" alt="Снимок экрана от 2026-05-02 22-51-59" src="https://github.com/user-attachments/assets/c4ab6874-8343-4c35-be2f-c700be4ffbdc" />
